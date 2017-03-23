@@ -12,12 +12,12 @@ const Nouislider = require('react-nouislider');
 const AxesSelector = React.createClass({
     propTypes: {
         dimension: React.PropTypes.object,
-        activeAxis: React.PropTypes.num,
+        activeAxis: React.PropTypes.number,
         setDimIdx: React.PropTypes.func
     },
     getDefaultProps() {
         return {
-            activeAxis: "",
+            activeAxis: 0,
             setDimIdx: () => {}
         };
     },
