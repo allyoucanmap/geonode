@@ -1,4 +1,17 @@
-@import "../../node_modules/bootstrap/less/bootstrap.less";
-@import "./common.less";
-@import "./variables.less";
-@import "./icon.less";
+.disaster {
+
+  font-family: @font-family-sans-serif;
+  margin: 0;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  color: @text-color;
+  background-color: @body-bg;
+
+  @import "../../node_modules/bootstrap/less/bootstrap.less";
+  @import (less) "./font-awesome.min.css";
+  @import (less) "../../node_modules/react-nouislider/example/nouislider.css";
+  @import "./common.less";
+  @import "./icon.less";
+  @import "./variables.less";
+  
+}
