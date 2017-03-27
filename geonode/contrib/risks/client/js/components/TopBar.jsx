@@ -8,6 +8,7 @@
 const React = require('react');
 const Navigation = require('./Navigation');
 const DownloadBtn = require('./DownloadBtn');
+const HelpBtn = require('./HelpBtn');
 const RiskSelector = require('./RiskSelector');
 
 const TopBar = React.createClass({
@@ -19,25 +20,27 @@ const TopBar = React.createClass({
         activeRisk: React.PropTypes.string,
         overviewHref: React.PropTypes.string,
         title: React.PropTypes.string.isRequired,
-        context: React.PropTypes.string
+        context: React.PropTypes.string,
+        toggleTutorial: React.PropTypes.func
     },
     getDefaultProps() {
         return {
             navItems: [],
             riskItems: [],
             getData: () => {},
-            title: ''
+            title: '',
+            toggleTutorial: () => {}
         };
     },
     render() {
-        const {navItems, context, riskItems, overviewHref, activeRisk, getData, zoom} = this.props;
+        const {navItems, context, riskItems, overviewHref, activeRisk, getData, zoom, toggleTutorial} = this.props;
         return (
             <div className="container-fluid">
                 <div className="disaster-breadcrumbs">
                     <Navigation items={navItems} zoom={zoom} context={context}/>
                     <div className="pull-right">
                         <DownloadBtn/>
-                        <button className="btn btn-primary"><i className="fa fa-question"/></button>
+                        <HelpBtn toggleTutorial={toggleTutorial}/>
                     </div>
                 </div>
                 <div className="disaster-risk-selector">
