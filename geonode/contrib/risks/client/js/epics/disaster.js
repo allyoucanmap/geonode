@@ -8,16 +8,55 @@
 const Rx = require('rxjs');
 const Api = require('../api/riskdata');
 const {zoomToExtent} = require('../../MapStore2/web/client/actions/map');
+const {setupTutorial} = require('../../MapStore2/web/client/actions/tutorial');
 const bbox = require('turf-bbox');
 const {changeLayerProperties, addLayer} = require('../../MapStore2/web/client/actions/layers');
 const assign = require('object-assign');
 const {configLayer} = require('../utils/DisasterUtils');
+const TutorialPresets = require('../utils/TutorialPresets');
+const defaultStep = {
+          title: '',
+          text: '',
+          position: 'bottom',
+          type: 'click',
+          allowClicksThruHole: true
+};
+const introStyle = {
+    backgroundColor: 'transparent',
+    color: '#fff',
+    mainColor: '#fff',
+    textAlign: 'center',
+    header: {
+        padding: 5,
+        fontFamily: 'Georgia, serif',
+        fontSize: '2.8em'
+    },
+    main: {
+        fontSize: '1.0em',
+        padding: 5
+    },
+    footer: {
+        padding: 10
+    },
+    button: {
+        color: '#fff',
+        backgroundColor: '#078aa3'
+    },
+    close: {
+        display: 'none'
+    },
+    skip: {
+        color: '#fff'
+    }
+};
 const {
     GET_DATA,
     LOAD_RISK_MAP_CONFIG,
     GET_RISK_FEATURES,
     GET_ANALYSIS_DATA,
     INIT_RISK_APP,
+    DATA_LOADED,
+    ANALYSIS_DATA_LOADED,
     dataLoaded,
     dataLoading,
     dataError,
@@ -95,5 +134,14 @@ const initStateEpic = action$ =>
             return [getData(`${action.href}${action.gc || ''}`), getFeatures(geomHref)].concat(analysisHref && getAnalysisData(analysisHref) || [] );
         }).
         mergeAll();
+const changeTutorial = action$ =>
+    action$.ofType(DATA_LOADED, ANALYSIS_DATA_LOADED).switchMap( action => {
+        return Rx.Observable.of(action.type).map((type) => {
+            console.log(TutorialPresets[type]);
+            return setupTutorial(TutorialPresets[type], introStyle, '', defaultStep);
+        });
+        // console.log('ok');
+        // return setupTutorial(steps, introStyle, '', defaultStep);
+    });
 
-module.exports = {getRiskDataEpic, getRiskMapConfig, getRiskFeatures, getAnalysisEpic, zoomInOutEpic, initStateEpic};
+module.exports = {getRiskDataEpic, getRiskMapConfig, getRiskFeatures, getAnalysisEpic, zoomInOutEpic, initStateEpic, changeTutorial};
