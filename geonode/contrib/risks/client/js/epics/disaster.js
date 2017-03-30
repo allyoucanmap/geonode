@@ -8,47 +8,12 @@
 const Rx = require('rxjs');
 const Api = require('../api/riskdata');
 const {zoomToExtent} = require('../../MapStore2/web/client/actions/map');
-const {setupTutorial} = require('../../MapStore2/web/client/actions/tutorial');
+const {setupTutorial, disableTutorial} = require('../../MapStore2/web/client/actions/tutorial');
 const bbox = require('turf-bbox');
 const {changeLayerProperties, addLayer} = require('../../MapStore2/web/client/actions/layers');
 const assign = require('object-assign');
 const {configLayer} = require('../utils/DisasterUtils');
-const TutorialPresets = require('../utils/TutorialPresets');
-const defaultStep = {
-          title: '',
-          text: '',
-          position: 'bottom',
-          type: 'click',
-          allowClicksThruHole: true
-};
-const introStyle = {
-    backgroundColor: 'transparent',
-    color: '#fff',
-    mainColor: '#fff',
-    textAlign: 'center',
-    header: {
-        padding: 5,
-        fontFamily: 'Georgia, serif',
-        fontSize: '2.8em'
-    },
-    main: {
-        fontSize: '1.0em',
-        padding: 5
-    },
-    footer: {
-        padding: 10
-    },
-    button: {
-        color: '#fff',
-        backgroundColor: '#078aa3'
-    },
-    close: {
-        display: 'none'
-    },
-    skip: {
-        color: '#fff'
-    }
-};
+const {defaultStep, introStyle, tutorialPresets} = require('../utils/TutorialPresets');
 const {
     GET_DATA,
     LOAD_RISK_MAP_CONFIG,
@@ -136,12 +101,13 @@ const initStateEpic = action$ =>
         mergeAll();
 const changeTutorial = action$ =>
     action$.ofType(DATA_LOADED, ANALYSIS_DATA_LOADED).switchMap( action => {
-        return Rx.Observable.of(action.type).map((type) => {
-            console.log(TutorialPresets[type]);
-            return setupTutorial(TutorialPresets[type], introStyle, '', defaultStep);
+        return Rx.Observable.of(action).flatMap((actn) => {
+            let type = actn.data && actn.data.analysisType ? actn.type + '_R' : actn.type;
+            if (type === 'DATA_LOADED_R') {
+                return [setupTutorial(tutorialPresets[type], introStyle, '', defaultStep), disableTutorial()];
+            }
+            return [setupTutorial(tutorialPresets[type], introStyle, '', defaultStep)];
         });
-        // console.log('ok');
-        // return setupTutorial(steps, introStyle, '', defaultStep);
     });
 
 module.exports = {getRiskDataEpic, getRiskMapConfig, getRiskFeatures, getAnalysisEpic, zoomInOutEpic, initStateEpic, changeTutorial};
