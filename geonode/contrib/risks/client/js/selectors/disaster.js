@@ -8,7 +8,8 @@ const analysisTypeSel = ({disaster = {}}) => disaster.analysisType || {};
 const notificationsSel = (state) => state.notifications || [];
 const currentAnalysisUrlSel = ({disaster = {}}) => disaster.currentAnalysisUrl || '';
 const riskAnalysisDataSel = ({disaster = {}}) => disaster.riskAnalysis && disaster.riskAnalysis.riskAnalysisData || {};
-const dimSelector = ({disaster = {}}) => disaster.dim || {dim1: 0, dim2: 1, dim1Idx: 0, dim2Idx: 0};
+const dimInit = {dim1: 0, dim2: 1, dim1Idx: 0, dim2Idx: 0};
+const dimSelector = ({disaster = {}}) => disaster.dim || dimInit;
 const contextSel = ({disaster = {}}) => disaster.context && !isNull(disaster.context) && disaster.context || '';
 const riskAnalysisContextSelector = ({disaster = {}}) => disaster.riskAnalysis && disaster.riskAnalysis.context;
 const topBarSelector = createSelector([navItemsSel, riskItemsSel, hazardTypeSel, contextSel],
@@ -48,7 +49,7 @@ const axesSelector = createSelector([riskAnalysisDataSel, dimSelector],
 const shareUrlSelector = createSelector([navItemsSel, contextSel, riskAnalysisContextSelector, dimSelector],
     (navItems, context, riskAnalysisContext, dim) => {
         const {host, pathname, protocol} = url.parse(window.location.href, false);
-        return {shareUrl: `${protocol}//${host}${pathname}?init=${JSON.stringify({href: (last(navItems) || {href: ''}).href, gc: context, ac: riskAnalysisContext, d: dim})}`};
+        return {shareUrl: `${protocol}//${host}${pathname}?init=${JSON.stringify({href: (last(navItems) || {href: ''}).href, geomHref: (last(navItems) || {geom: ''}).geom, gc: context, ac: riskAnalysisContext, d: dim})}`};
     });
 const downloadDataSelector = createSelector([notificationsSel, riskAnalysisDataSel],
     (notifications, riskAnalysisData) => (
@@ -78,6 +79,13 @@ const mapLabelSelector = createSelector([notificationsSel, currentAnalysisUrlSel
           currentUrl
         })
       );
+const chartSelector = createSelector([riskAnalysisDataSel, dimSelector],
+    (riskAnalysisData, dim) => ({
+        values: riskAnalysisData.data && riskAnalysisData.data.values,
+        dimension: riskAnalysisData.data && riskAnalysisData.data.dimensions,
+        val: riskAnalysisData.data && riskAnalysisData.data.dimensions && riskAnalysisData.data.dimensions[dim.dim1].values[dim.dim1Idx],
+        dim
+    }));
 module.exports = {
     drillUpSelector,
     topBarSelector,
@@ -88,6 +96,7 @@ module.exports = {
     downloadDataSelector,
     moreInfoSelector,
     chartLabelSelector,
-    mapLabelSelector
+    mapLabelSelector,
+    chartSelector
 };
 

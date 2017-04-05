@@ -23,10 +23,11 @@ const ZOOM_IN_OUT = 'ZOOM_IN_OUT';
 const INIT_RISK_APP = 'INIT_RISK_APP';
 const GET_S_FURTHER_RESOURCE_DATA = 'GET_S_FURTHER_RESOURCE_DATA';
 
-function initState({href, gc, ac}) {
+function initState({href, geomHref, gc, ac}) {
     return {
         type: INIT_RISK_APP,
         href,
+        geomHref,
         gc,
         ac
     };
