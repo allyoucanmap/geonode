@@ -9,7 +9,7 @@ const React = require('react');
 const {connect} = require('react-redux');
 const {dataContainerSelector} = require('../selectors/disaster');
 
-const {getAnalysisData, getData, setDimIdx} = require('../actions/disaster');
+const {getAnalysisData, getData, setDimIdx, getSFurtherResourceData} = require('../actions/disaster');
 const Chart = require('../components/Chart');
 const DownloadData = require('../components/DownloadData');
 const MoreInfo = require('../components/MoreInfo');
@@ -18,7 +18,7 @@ const {Panel, Tooltip, OverlayTrigger} = require('react-bootstrap');
 const Nouislider = require('react-nouislider');
 const {show, hide} = require('react-notification-system-redux');
 const {chartLabelSelector} = require('../selectors/disaster');
-const LabelResource = connect(chartLabelSelector, { show, hide })(require('../components/LabelResource'));
+const LabelResource = connect(chartLabelSelector, { show, hide, getData: getSFurtherResourceData })(require('../components/LabelResource'));
 
 const DataContainer = React.createClass({
     propTypes: {

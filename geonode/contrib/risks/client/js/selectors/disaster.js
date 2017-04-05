@@ -6,6 +6,7 @@ const riskItemsSel = ({disaster = {}}) => disaster.overview || [];
 const hazardTypeSel = ({disaster = {}}) => disaster.hazardType || {};
 const analysisTypeSel = ({disaster = {}}) => disaster.analysisType || {};
 const notificationsSel = (state) => state.notifications || [];
+const currentAnalysisUrlSel = ({disaster = {}}) => disaster.currentAnalysisUrl || '';
 const riskAnalysisDataSel = ({disaster = {}}) => disaster.riskAnalysis && disaster.riskAnalysis.riskAnalysisData || {};
 const dimSelector = ({disaster = {}}) => disaster.dim || {dim1: 0, dim2: 1, dim1Idx: 0, dim2Idx: 0};
 const contextSel = ({disaster = {}}) => disaster.context && !isNull(disaster.context) && disaster.context || '';
@@ -63,16 +64,18 @@ const moreInfoSelector = createSelector([notificationsSel, riskAnalysisDataSel],
         riskAnalysisData
       })
     );
-const chartLabelSelector = createSelector([notificationsSel],
-      (notifications) => (
+const chartLabelSelector = createSelector([notificationsSel, currentAnalysisUrlSel],
+      (notifications, currentUrl) => (
         {
-          notification: notifications.filter((val) => { return val.uid === 'chart_label_tab'; })
+          notification: notifications.filter((val) => { return val.uid === 'chart_label_tab'; }),
+          currentUrl
         })
       );
-const mapLabelSelector = createSelector([notificationsSel],
-      (notifications) => (
+const mapLabelSelector = createSelector([notificationsSel, currentAnalysisUrlSel],
+      (notifications, currentUrl) => (
         {
-          notification: notifications.filter((val) => { return val.uid === 'map_label_tab'; })
+          notification: notifications.filter((val) => { return val.uid === 'map_label_tab'; }),
+          currentUrl
         })
       );
 module.exports = {
