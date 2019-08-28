@@ -50,15 +50,16 @@ class WSServiceSelect extends React.Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getServices();
   }
-
-  componentWillReceiveProps(nextProps) {
+  
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.selected) {return;}
     const services = nextProps.services;
     if (services && services.event_types && services.event_types.length > 0) {
-      this.props.setService(services.event_types[0].name);
+      const firstSelected = services.event_types.find(({ name }) => name === 'OWS:WMS') || services.event_types[0];
+      this.props.setService(firstSelected && firstSelected.name);
     }
   }
 
