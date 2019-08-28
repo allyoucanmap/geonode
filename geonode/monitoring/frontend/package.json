@@ -9,7 +9,7 @@
     "compile": "npm run clean && mkdirp ./dist && webpack --config ./webpack.config.js --mode production"
   },
   "author": "",
-  "license": "",
+  "license": "GPL-3.0",
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
