@@ -7,14 +7,14 @@ import styles from './styles';
 
 class Error extends React.Component {
   static propTypes = {
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
   }
 
   render() {
     return (
       <div style={styles.root}>
         <Header disableInterval back="/errors" autoRefresh={false} />
-        <ErrorDetails errorId={Number(this.props.params.errorId)} />
+        <ErrorDetails errorId={Number(this.props.match.params.errorId)} />
       </div>
     );
   }

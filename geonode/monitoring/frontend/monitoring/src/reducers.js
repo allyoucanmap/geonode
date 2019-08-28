@@ -43,7 +43,7 @@ import { alertConfig, alertConfigSave } from './pages/alert-config/reducers';
 import alertSettings from './pages/alerts-settings/reducers';
 
 
-const reducers = {
+export const reducers = {
   alertConfig,
   alertConfigSave,
   alertList,

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import HoverPaper from '../../atoms/hover-paper';
 import actions from '../../organisms/alert-list/actions';
 import styles from './styles';
-
+import {withRouter} from 'react-router-dom';
 
 const mapStateToProps = (state) => ({
   alertList: state.alertList.response,
@@ -23,15 +23,11 @@ class Alerts extends React.Component {
     timestamp: PropTypes.instanceOf(Date),
   }
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  }
-
   constructor(props) {
     super(props);
 
     this.handleClick = () => {
-      this.context.router.push('/alerts');
+      this.props.history.push('/alerts');
     };
 
     this.get = (interval = this.props.interval) => {
@@ -76,4 +72,4 @@ class Alerts extends React.Component {
 }
 
 
-export default Alerts;
+export default withRouter(Alerts);

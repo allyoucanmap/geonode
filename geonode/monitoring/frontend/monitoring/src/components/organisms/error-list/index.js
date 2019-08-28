@@ -12,7 +12,7 @@ import {
 } from 'material-ui/Table';
 import styles from './styles';
 import actions from './actions';
-
+import {withRouter} from 'react-router-dom';
 
 const mapStateToProps = (state) => ({
   errorList: state.errorList.response,
@@ -23,9 +23,6 @@ const mapStateToProps = (state) => ({
 
 @connect(mapStateToProps, actions)
 class ErrorList extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  }
 
   static propTypes = {
     errorList: PropTypes.object,
@@ -38,7 +35,7 @@ class ErrorList extends React.Component {
     super(props);
 
     this.handleClick = (row, column, event) => {
-      this.context.router.push(`/errors/${event.target.dataset.id}`);
+      this.props.history.push(`/errors/${event.target.dataset.id}`);
     };
   }
 
@@ -89,4 +86,4 @@ class ErrorList extends React.Component {
 }
 
 
-export default ErrorList;
+export default withRouter(ErrorList);

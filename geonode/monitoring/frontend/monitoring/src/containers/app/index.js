@@ -14,7 +14,6 @@ import Home from '../../pages/home';
 import SWPerf from '../../pages/software-performance';
 
 import reset from '../../reset.js';
-import fonts from '../../fonts/fonts.js';
 import actions from './actions';
 import styles from './styles';
 
@@ -40,7 +39,6 @@ class App extends React.Component {
   render() {
     return (
       <div style={styles.root}>
-        <Style rules={fonts} />
         <Style rules={reset} />
         {this.props.children}
       </div>

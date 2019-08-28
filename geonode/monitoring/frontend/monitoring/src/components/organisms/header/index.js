@@ -10,7 +10,7 @@ import { minute, hour, day, week } from '../../../constants';
 import actions from './actions';
 import styles from './styles';
 import { AUTO_REFRESH_INTERVAL } from './constants';
-
+import {withRouter} from 'react-router-dom';
 
 const mapStateToProps = (state) => ({
   from: state.interval.from,
@@ -21,9 +21,6 @@ const mapStateToProps = (state) => ({
 
 @connect(mapStateToProps, actions)
 class Header extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  }
 
   static propTypes = {
     autoRefresh: PropTypes.bool,
@@ -115,7 +112,7 @@ class Header extends React.Component {
             style={styles.time}
             icon={<Back />}
             disabled={props.back === undefined}
-            onClick={() => this.context.router.push(props.back)}
+            onClick={() =>  this.props.history.push(props.back)}
           />
           <span style={styles.interval}>Latest:</span>
           <RaisedButton
@@ -172,4 +169,4 @@ class Header extends React.Component {
 }
 
 
-export default Header;
+export default withRouter(Header);

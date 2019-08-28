@@ -23,7 +23,7 @@ class AlertConfig extends React.Component {
   static propTypes = {
     alertConfig: PropTypes.object,
     get: PropTypes.func.isRequired,
-    params: PropTypes.object,
+    match: PropTypes.object,
     set: PropTypes.func.isRequired,
   }
 
@@ -51,7 +51,7 @@ class AlertConfig extends React.Component {
     this.handleSubmit = (event) => {
       event.preventDefault();
       const data = stateToData(this.state);
-      this.props.set(this.props.params.alertId, data);
+      this.props.set(this.props.match.params.alertId, data);
     };
 
     this.handleInputChange = (event, name) => {
@@ -88,7 +88,7 @@ class AlertConfig extends React.Component {
   }
 
   componentWillMount() {
-    this.props.get(this.props.params.alertId);
+    this.props.get(this.props.match.params.alertId);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -180,7 +180,7 @@ class AlertConfig extends React.Component {
     });
     return (
       <div style={styles.root}>
-        <Header back="/alerts/settings" disableInterval autoRefresh={false} />
+        <Header back="/alerts-settings" disableInterval autoRefresh={false} />
         <HoverPaper style={styles.content}>
           <form onSubmit={this.handleSubmit}>
             <div style={styles.heading}>

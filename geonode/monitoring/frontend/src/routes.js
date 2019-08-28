@@ -24,10 +24,10 @@ import AnalyticsDetails from './pages/AnalyticsDetails';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
-// import monitoring from '../monitoring/src/containers/app';
+import { pages as monitoringPages } from '../monitoring/src/routes';
 
 export const pages = [
-    // ...monitoring.pages,
+    ...monitoringPages,
     {
         group: 'Analytics',
         exact: true,

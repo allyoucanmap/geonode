@@ -1,23 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import ChartIcon from 'material-ui/svg-icons/av/equalizer';
 import HoverPaper from '../../atoms/hover-paper';
 import GeonodeStatus from '../../cels/geonode-status';
 import GeoserverStatus from '../../cels/geoserver-status';
 import styles from './styles';
-
+import {withRouter} from 'react-router-dom';
 
 class HardwarePerformance extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  }
-
   constructor(props) {
     super(props);
 
     this.handleClick = () => {
-      this.context.router.push('/performance/hardware');
+      this.props.history.push('/performance/hardware');
     };
   }
 
@@ -40,4 +35,4 @@ class HardwarePerformance extends React.Component {
 }
 
 
-export default HardwarePerformance;
+export default withRouter(HardwarePerformance);

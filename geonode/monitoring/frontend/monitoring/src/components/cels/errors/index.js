@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import HoverPaper from '../../atoms/hover-paper';
 import actions from '../../organisms/error-list/actions';
 import styles from './styles';
-
+import {withRouter} from 'react-router-dom';
 
 const mapStateToProps = (state) => ({
   errorList: state.errorList.response,
@@ -23,15 +23,11 @@ class Errors extends React.Component {
     timestamp: PropTypes.instanceOf(Date),
   }
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  }
-
   constructor(props) {
     super(props);
 
     this.handleClick = () => {
-      this.context.router.push('/errors');
+      this.props.history.push('/errors');
     };
 
     this.get = (interval = this.props.interval) => {
@@ -75,4 +71,4 @@ class Errors extends React.Component {
 }
 
 
-export default Errors;
+export default withRouter(Errors);

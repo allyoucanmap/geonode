@@ -8,7 +8,7 @@ import HoverPaper from '../../atoms/hover-paper';
 import Alert from '../../cels/alert';
 import actions from './actions';
 import styles from './styles';
-
+import {withRouter} from 'react-router-dom';
 
 const mapStateToProps = (state) => ({
   alerts: state.alertList.response,
@@ -20,9 +20,6 @@ const mapStateToProps = (state) => ({
 
 @connect(mapStateToProps, actions)
 class AlertList extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  }
 
   static propTypes = {
     alerts: PropTypes.object,
@@ -36,7 +33,7 @@ class AlertList extends React.Component {
     super(props);
 
     this.handleClick = () => {
-      this.context.router.push('/alerts/settings');
+      this.props.history.push('/alerts-settings');
     };
 
     this.get = (interval = this.props.interval) => {
@@ -84,4 +81,4 @@ class AlertList extends React.Component {
 }
 
 
-export default AlertList;
+export default withRouter(AlertList);

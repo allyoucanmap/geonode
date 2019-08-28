@@ -22,6 +22,8 @@ import 'babel-polyfill';
 
 import React from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
 import DashboardContainer from './containers/Dashboard';
 import { HashRouter, Route, withRouter } from 'react-router-dom'; 
 import { createHashHistory } from 'history';
@@ -64,21 +66,23 @@ const Root = function () {
         <AnalyticsContext.Provider
             value={{ services, resourceTypes: parseResourceTypes(resourceTypes), eventTypes, ...urlResponse }}>
             <ThemeProvider theme={theme}>
-                <HashRouter
-                    history={history}>
-                    <Dashboard
-                        loading={loadingServices || loadingResourceTypes || loadingEventTypes || loadingUrls}>
-                        {routes.map(route => {
-                            return (
-                                <Route
-                                    key={route.path}
-                                    exact={route.exact}
-                                    path={route.path}
-                                    component={route.component}/>
-                            );
-                        })}
-                    </Dashboard>
-                </HashRouter>
+                <Provider store={store}>
+                    <HashRouter
+                        history={history}>
+                        <Dashboard
+                            loading={loadingServices || loadingResourceTypes || loadingEventTypes || loadingUrls}>
+                            {routes.map(route => {
+                                return (
+                                    <Route
+                                        key={route.path}
+                                        exact={route.exact}
+                                        path={route.path}
+                                        component={route.component}/>
+                                );
+                            })}
+                        </Dashboard>
+                    </HashRouter>
+                </Provider>
             </ThemeProvider>
         </AnalyticsContext.Provider>
     );
