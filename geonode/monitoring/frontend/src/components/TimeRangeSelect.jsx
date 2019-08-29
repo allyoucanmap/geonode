@@ -26,6 +26,7 @@ import { ranges } from '../utils/TimeRangeUtils';
 import Paper from '@material-ui/core/Paper';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import { FormattedMessage } from 'react-intl';
 
 export default function TimeRangeSelect({
     timeRange = 'year',
@@ -46,7 +47,7 @@ export default function TimeRangeSelect({
                 variant={key === timeRange ? 'contained' : undefined}
                 color={key === timeRange ? 'primary' : undefined}
                 onClick={key === timeRange ? undefined : () => onChange(key)}>
-                {ranges[key].label}
+                <FormattedMessage id={ranges[key].label} defaultMessage={ranges[key].label}/>
             </Button>)}
             <Paper style={{display: 'flex', flexDirection: 'row', marginTop: 8 }}>
                 {!readOnly &&

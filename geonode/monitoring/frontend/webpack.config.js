@@ -68,7 +68,13 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new DefinePlugin({
-                '__DEVELOPMENT__': !isProduction
+                '__DEVELOPMENT__': !isProduction,
+                '__TRANSLATION_PATH__': isProduction
+                    ? "'/static/monitoring/translations/'"
+                    : "'/translations/'",
+                '__ASSETS_PATH__': isProduction
+                    ? "'/static/monitoring/assets/'"
+                    : "'/assets/'"
             })
         ],
         devServer: isProduction
@@ -82,7 +88,8 @@ module.exports = (env, argv) => {
                         context: [
                             '**',
                             '!**/static/monitoring/**',
-                            '!**/assets/**'
+                            '!**/assets/**',
+                            '!**/translations/**'
                         ],
                         target: `http://${devServerHost}/`,
                         secure: false,

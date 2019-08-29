@@ -56,19 +56,19 @@ const getRange = function(type, intervalType, format = 'MMMM Do YYYY, h:mm:ss a'
 
 export const ranges = {
     day: {
-        label: 'Day',
+        label: 'day',
         getRange: date => getRange('day', 'hour', 'LT', 'MMM Do ddd YYYY (LT)', date)
     },
     week: {
-        label: 'Week',
+        label: 'week',
         getRange: date => getRange('week', 'day', 'Do ddd', 'MMM Do dddd YYYY', date)
     },
     month: {
-        label: 'Month',
+        label: 'month',
         getRange: date => getRange('month', 'week', 'MMM Do', 'MMMM Do YYYY', date)
     },
     year: {
-        label: 'Year',
+        label: 'year',
         getRange: date => getRange('year', 'month', 'MMM YYYY', 'MMMM YYYY', date)
     }
 };

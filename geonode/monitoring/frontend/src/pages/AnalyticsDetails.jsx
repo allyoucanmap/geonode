@@ -48,6 +48,9 @@ import Map from '../components/Map';
 import { getDetailsPath } from '../utils/RouteUtils';
 import AnalyticsContext from '../context';
 import { RequestCounter } from '../components/Counter';
+import { FormattedMessage } from 'react-intl';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 
 export default function AnalyticsDetails({ maxCount = 10, match, history }) {
     const classes = useStyles();
@@ -85,21 +88,28 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
             maxWidth="lg"
             className={classes.container}>
             <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Typography
+                        component="h1"
+                        variant="h6">
+                        <FormattedMessage id="totalRequestsNumberByResource" defaultMessage="Total Number of Requests by Resource"/>
+                    </Typography>
+                </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Layers"
+                        label={<FormattedMessage id="layers" defaultMessage="Layers"/>}
                         resourceType="layer"
                         timeRange={timeRange}
                         date={date}
                         globalTimeRange
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
                             }
@@ -107,19 +117,19 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Maps"
+                        label={<FormattedMessage id="maps" defaultMessage="Maps"/>}
                         resourceType="map"
                         timeRange={timeRange}
                         date={date}
                         globalTimeRange
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
                             }
@@ -127,19 +137,19 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Documents"
+                        label={<FormattedMessage id="documents" defaultMessage="Documents"/>}
                         resourceType="document"
                         timeRange={timeRange}
                         date={date}
                         globalTimeRange
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
                             }
@@ -147,7 +157,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label={homeUrl.id === undefined ? layersUrl.name : 'Homepage'}
+                        label={homeUrl.id === undefined ? layersUrl.name : <FormattedMessage id="homepage" defaultMessage="Homepage"/>}
                         resourceType="url"
                         timeRange={timeRange}
                         date={date}
@@ -155,16 +165,19 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         globalTimeRange
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
                             }
                         }}  />
+                </Grid>
+                <Grid item xs={12}>
+                    <Divider />
                 </Grid>
                 <Grid item xs={12} className={classes.stickyHeader} style={{ paddingBottom: 0 }}>
                     <TimeRangeSelect
@@ -180,25 +193,35 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         <div style={{ display: 'flex', marginTop: 8 }}>
                             <div style={{ flex: 1}}>
                                 <Autocomplete
-                                    label="Select Resource Category"
+                                    label={<FormattedMessage id="selectResourceCategory" defaultMessage="Select Resource Category"/>}
                                     value={resourceTypeValue}
                                     onChange={({ value }) => handleUpdate({
                                         resourceType: value,
                                         resourceId: undefined,
                                         eventType: undefined
                                     })}
-                                    suggestions={resourceTypes}/>
+                                    suggestions={resourceTypes
+                                        .map(({ label, ...option }) => ({
+                                            ...option,
+                                            label: <FormattedMessage id={(label || '').toLowerCase()} defaultMessage={label}/>
+                                        }))}/>
                             </div>
                             <div style={{ flex: 1}}>
                                 {resourceId !== undefined && <Chip
                                     size="small"
-                                    label={`Selected Resource ${resourceId}`}
+                                    label={<FormattedMessage
+                                        id="selectedResource"
+                                        defaultMessage="Selected Resource {resource}"
+                                        values={{ resource: resourceId }}/>}
                                     onDelete={() => handleUpdate({ resourceId: undefined })}
                                     className={classes.chip}
                                     color="primary"/>}
                                 {eventType !== undefined && <Chip
                                     size="small"
-                                    label={`Selected Event ${eventType}`}
+                                    label={<FormattedMessage
+                                        id="selectedEventType"
+                                        defaultMessage="Selected Event {eventType}"
+                                        values={{ eventType }}/>}
                                     onDelete={() => handleUpdate({ eventType: undefined })}
                                     className={classes.chip}
                                     color="primary"/>}
@@ -210,9 +233,13 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                 <Grid item xs={12}>
                     <RequestChart
                         date={date}
-                        label={resourceId !== undefined
-                            ? resourceId
-                            : 'Most Frequently Accessed Resources'}
+                        label={<FormattedMessage
+                            id="requestCountTitle"
+                            defaultMessage="Requests Count ({resourceType})"
+                            values={{ resourceType: resourceId !== undefined
+                                ? resourceId
+                                : resourceType
+                                    }}/>}
                         resourceType={resourceType}
                         resourceId={resourceId}
                         eventType={eventType}
@@ -227,7 +254,9 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         maxCount={maxCount}
                         resourceType={resourceType}
                         selectedId={parseFloat(resourceId)}
-                        label={'Most Frequently Accessed Resources'}
+                        label={<FormattedMessage
+                            id="frequentlyAccessedResources"
+                            defaultMessage="Frequently Accessed Resources"/>}
                         onSelect={(resource) =>
                             handleUpdate({
                                 resourceId: resource.id === resourceId
@@ -236,12 +265,12 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                             })}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: 'Visitors',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
                             }
@@ -261,15 +290,17 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                         ? undefined
                                         : event.id
                             })}
-                        label={'Events'}
+                        label={<FormattedMessage
+                            id="frequentlyUsedEvents"
+                            defaultMessage="Frequently Used Events"/>}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getEventsHitsList
                             },
                             visitors: {
-                                label: 'Visitors',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getEventsVisitorsList
                             }
@@ -283,10 +314,10 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         maxCount={maxCount}
                         resourceId={resourceId}
                         resourceType={resourceType}
-                        label={'Visitor'}
+                        label={<FormattedMessage id="mostActiveVisitors" defaultMessage="Most Active Visitors"/>}
                         requests={{
                             hits: {
-                                label: 'Visit',
+                                label: <FormattedMessage id="visits" defaultMessage="Visits"/>,
                                 request: getVisitorsList
                             }
                         }} />
@@ -301,10 +332,10 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         eventType={eventType}
                         maxCount={maxCount}
                         header={({ items }) => items && items.length > 0 && <Map id="map-details" data={items} />}
-                        label={'Most Active Countries'}
+                        label={<FormattedMessage id="mostActiveCountries" defaultMessage="Most Active Countries"/>}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 request: getCountriesCount
                             }
                         }} />
@@ -318,10 +349,10 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         resourceType={resourceType}
                         eventType={eventType}
                         maxCount={maxCount}
-                        label={'Most Frequently Used User Agents Family'}
+                        label={<FormattedMessage id="mostActiveUserAgentsFamily" defaultMessage="Most Frequently Used User Agents Family"/>}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 request: getUserAgentFamilyCount
                             }
                         }} />
@@ -335,10 +366,10 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         resourceId={resourceId}
                         resourceType={resourceType}
                         eventType={eventType}
-                        label={'Most Frequently Used User Agents'}
+                        label={<FormattedMessage id="mostActiveUserAgents" defaultMessage="Most Frequently Used User Agents"/>}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 request: getUserAgentCount
                             }
                         }} />

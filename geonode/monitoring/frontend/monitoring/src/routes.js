@@ -50,60 +50,60 @@ function wrapComponent(Component) {
 
 export const pages = [
     {
-        group: 'Monitoring',
+        group: 'monitoring',
         exact: true,
-        label: 'Overview',
+        label: 'overview',
         Icon: ShowChartIcon,
         paths: ["/"],
         component: wrapComponent(Home)
     },
     {
-        group: 'Monitoring',
+        group: 'monitoring',
         exact: true,
-        label: 'Errors',
+        label: 'errors',
         Icon: ErrorIcon,
         paths: ["/errors"],
         component: wrapComponent(Errors)
     },
     {
-        group: 'Monitoring',
+        group: 'monitoring',
         exact: true,
         paths: ["/errors/:errorId"],
         component: wrapComponent(ErrorDetails)
     },
     {
-        group: 'Monitoring',
+        group: 'monitoring',
         exact: true,
-        label: 'Alerts',
+        label: 'alerts',
         Icon: NotificationsIcon,
         paths: ["/alerts"],
         component: wrapComponent(Alerts)
     },
     {
-        group: 'Monitoring',
+        group: 'monitoring',
         exact: true,
-        label: 'Alerts Settings',
+        label: 'alerts-settings',
         paths: ["/alerts-settings"],
         component: wrapComponent(AlertsSettings)
     },
     {
-        group: 'Monitoring',
+        group: 'monitoring',
         exact: true,
         paths: ["/alerts/:alertId"],
         component: wrapComponent(AlertConfig)
     },
     {
-        group: 'Monitoring',
+        group: 'monitoring',
         exact: true,
-        label: 'Software Perf',
+        label: 'software-perf',
         Icon: DeveloperBoardIcon,
         paths: ["/performance/software"],
         component: wrapComponent(SWPerf)
     },
     {
-        group: 'Monitoring',
+        group: 'monitoring',
         exact: true,
-        label: 'Hardware Perf',
+        label: 'hardware-perf',
         Icon: MemoryIcon,
         paths: ["/performance/hardware"],
         component: wrapComponent(HWPerf)

@@ -29,17 +29,17 @@ import { pages as monitoringPages } from '../monitoring/src/routes';
 export const pages = [
     ...monitoringPages,
     {
-        group: 'Analytics',
+        group: 'analytics',
         exact: true,
-        label: 'Overview',
+        label: 'overview',
         paths: ['/analytics'],
         Icon: BarChartIcon,
         component: AnalyticsOverview
     },
     {
-        group: 'Analytics',
+        group: 'analytics',
         exact: true,
-        label: 'Details',
+        label: 'details',
         paths: [
             '/analytics/details',
             '/analytics/details/:resourceType',

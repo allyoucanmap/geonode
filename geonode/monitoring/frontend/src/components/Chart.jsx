@@ -36,12 +36,12 @@ import {
 } from '../api';
 import useRequest from '../hooks/useRequest';
 import ResponseError from './ResponseError';
-
+import { FormattedMessage } from 'react-intl';
 
 export const RequestChart = function ({ label, timeRange, globalTimeRange, resourceType, resourceId, date, eventType }) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    const [response, loading] = useRequest(getResourcesHitsInterval, { timeRange: globalTimeRange ? undefined : timeRange,  resourceType, resource: resourceId, eventType }, [ timeRange, resourceId, resourceType, date, eventType ]);
+    const [response, loading, hitsError] = useRequest(getResourcesHitsInterval, { timeRange: globalTimeRange ? undefined : timeRange,  resourceType, resource: resourceId, eventType }, [ timeRange, resourceId, resourceType, date, eventType ]);
     const { items = [], count: hitsCount, format } = response || {};
     const [userResponse, userLoading, userError] = useRequest(getResourcesVisitorsInterval, { timeRange: globalTimeRange ? undefined : timeRange,  resourceType, resource: resourceId, eventType }, [ timeRange, resourceId, resourceType, date, eventType ]);
     const { items: visitors, count: visitorsCount } = userResponse;
@@ -93,14 +93,22 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
             <Paper>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
-                        <Typography
-                            component="h2"
-                            variant="h6"
-                            color="primary"
-                            align="center"
-                            gutterBottom>
-                            <VisibilityIcon style={{ verticalAlign: 'middle' }} /> Hits {hitsCount}
-                        </Typography>
+                        {!hitsError
+                            ? <Typography
+                                component="h2"
+                                variant="h6"
+                                color="primary"
+                                align="center"
+                                gutterBottom>
+                                <VisibilityIcon style={{ verticalAlign: 'middle' }} /> <FormattedMessage id="hits" defaultMessage="Hits"/> {hitsCount}
+                            </Typography>
+                            : <ResponseError
+                                {...hitsError}
+                                label={<FormattedMessage id="hits" defaultMessage="Hits"/>}
+                                typography={{
+                                    component: 'h2',
+                                    variant: 'h6'
+                                }} />}
                     </Grid>
                     <Grid item xs={12} md={6}>
                         {!userError
@@ -110,12 +118,12 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                                 color="primary"
                                 align="center"
                                 gutterBottom>
-                                <PersonIcon style={{ verticalAlign: 'middle' }} /> Visitors {visitorsCount}
+                                <PersonIcon style={{ verticalAlign: 'middle' }} /> <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/> {visitorsCount}
 
                             </Typography>
                             : <ResponseError
                                 {...userError}
-                                label="Visitors"
+                                label={<FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>}
                                 typography={{
                                     component: 'h2',
                                     variant: 'h6'

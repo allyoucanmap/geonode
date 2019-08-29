@@ -16,6 +16,8 @@
         "es6": true
     },
     "globals": {
-        "__DEVELOPMENT__": false
+        "__DEVELOPMENT__": false,
+        "__TRANSLATION_PATH__": false,
+        "__ASSETS_PATH__": false
     }
 }

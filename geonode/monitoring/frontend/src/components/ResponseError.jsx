@@ -26,6 +26,7 @@ import Button from '@material-ui/core/Button';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import Divider from '@material-ui/core/Divider';
 import Popover from '@material-ui/core/Popover';
+import { FormattedMessage } from 'react-intl';
 
 export default function ResponseError({ label = '', status, statusText, messages = [], typography = {} }) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -62,7 +63,7 @@ export default function ResponseError({ label = '', status, statusText, messages
                 }}
                 onClose={() => setAnchorEl(null)}
                 disableRestoreFocus>
-                <Typography color="error">{label} Request Error</Typography>
+                <Typography color="error">{label} <FormattedMessage id="requestError" defaultMessage="Request Error"/></Typography>
                 {Object.keys(messages || {}).map(key =>
                 <Fragment key={key}>
                 <Typography variant="caption" display="block"><strong>{key}</strong>:</Typography>

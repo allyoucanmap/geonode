@@ -34,6 +34,7 @@ import {
     Geography
 } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip'
+import { FormattedMessage } from 'react-intl';
 
 const colorScale = chroma.scale(['#c0d8ed', '#1b4060']);
 
@@ -72,7 +73,7 @@ export default function Map({ id, data }) {
 
     useEffect(() => {
         let isMounted = true;
-        axios.get('/assets/world-50m.json')
+        axios.get(`${__ASSETS_PATH__}world-50m.json`)
             .then(({ data }) => {
                 if (isMounted) {
                     setGeography(data);
@@ -142,7 +143,7 @@ export default function Map({ id, data }) {
                 </ZoomableGroup>
             </ComposableMap>
             <ReactTooltip />
-            <div>Count</div>
+            <div><FormattedMessage id="count" defaultMessage="Count"/></div>
             {legend.map(([from, to, backgroundColor], idx) => {
                 return (
                     <div key={idx} style={{ display: 'flex', alignItems: 'center' }}>

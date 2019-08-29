@@ -38,6 +38,8 @@ import {
     getResourceMainUrls
 } from './api';
 import AnalyticsContext from './context';
+import { IntlProvider, FormattedMessage } from 'react-intl';
+import useTranslation from './hooks/useTranslation';
 
 import '../theme/overrides.scss';
 
@@ -62,29 +64,35 @@ const Root = function () {
     const { resourceTypes = [] } = resourceTypeResponse || {};
     const { eventTypes = [] } = eventTypesResponse || {};
 
+    const [ translation, loadingTranslation ] = useTranslation();
+
     return (
-        <AnalyticsContext.Provider
-            value={{ services, resourceTypes: parseResourceTypes(resourceTypes), eventTypes, ...urlResponse }}>
-            <ThemeProvider theme={theme}>
-                <Provider store={store}>
-                    <HashRouter
-                        history={history}>
-                        <Dashboard
-                            loading={loadingServices || loadingResourceTypes || loadingEventTypes || loadingUrls}>
-                            {routes.map(route => {
-                                return (
-                                    <Route
-                                        key={route.path}
-                                        exact={route.exact}
-                                        path={route.path}
-                                        component={route.component}/>
-                                );
-                            })}
-                        </Dashboard>
-                    </HashRouter>
-                </Provider>
-            </ThemeProvider>
-        </AnalyticsContext.Provider>
+        <IntlProvider
+            locale={translation.locale}
+            messages={translation.messages}>
+            <AnalyticsContext.Provider
+                value={{ services, resourceTypes: parseResourceTypes(resourceTypes), eventTypes, ...urlResponse }}>
+                <ThemeProvider theme={theme}>
+                    <Provider store={store}>
+                        <HashRouter
+                            history={history}>
+                            <Dashboard
+                                loading={loadingTranslation || loadingServices || loadingResourceTypes || loadingEventTypes || loadingUrls}>
+                                {routes.map(route => {
+                                    return (
+                                        <Route
+                                            key={route.path}
+                                            exact={route.exact}
+                                            path={route.path}
+                                            component={route.component}/>
+                                    );
+                                })}
+                            </Dashboard>
+                        </HashRouter>
+                    </Provider>
+                </ThemeProvider>
+            </AnalyticsContext.Provider>
+        </IntlProvider>
     );
 }
 

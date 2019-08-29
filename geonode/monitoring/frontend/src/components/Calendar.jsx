@@ -80,9 +80,9 @@ export default function Calendar({ label = '', tooltip = () => 'tooltip', resour
                 <Table size="small">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Owner</TableCell>
-                            <TableCell align="right">Time</TableCell>
+                            <TableCell><FormattedMessage id="name" defaultMessage="Name"/></TableCell>
+                            <TableCell><FormattedMessage id="owner" defaultMessage="Owner"/></TableCell>
+                            <TableCell align="right"><FormattedMessage id="time" defaultMessage="Time"/></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

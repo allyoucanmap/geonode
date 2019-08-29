@@ -38,7 +38,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
+import { FormattedMessage } from 'react-intl';
 import useStyles from '../hooks/useStyles';
 import { pages } from '../routes';
 
@@ -77,7 +77,7 @@ export default function Dashboard({ children, history, location, loading }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        {selectedLabel}
+                        {!loading && <FormattedMessage id={selectedLabel} defaultMessage={selectedLabel}/>}
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -99,7 +99,7 @@ export default function Dashboard({ children, history, location, loading }) {
                             <List
                                 subheader={
                                     <ListSubheader>
-                                        {open ? groupName : ''}
+                                        {open ? <FormattedMessage id={groupName} defaultMessage={groupName}/> : ''}
                                     </ListSubheader>
                                 }>
                                 {groupPages.filter(({ Icon }) => Icon).map(tab => {
@@ -113,7 +113,8 @@ export default function Dashboard({ children, history, location, loading }) {
                                             <ListItemIcon>
                                                 <Icon />
                                             </ListItemIcon>
-                                            <ListItemText primary={label} />
+                                            <ListItemText
+                                                primary={<FormattedMessage id={label} defaultMessage={label}/>}/>
                                         </ListItem>
                                     );
                                 })}

@@ -41,7 +41,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import LinkIcon from '@material-ui/icons/Link';
 import Link from '@material-ui/core/Link';
-
+import { FormattedMessage } from 'react-intl';
+import isFunction from 'lodash/isFunction';
 
 const Row = function({ id, type, name, href, label, count, flagIconClassName, showType, onSelect, selectedId }) {
     const classes = useStyles();
@@ -96,8 +97,8 @@ const Table = function({ title = '', top, header, loading, items, showType, onSe
                     <TableMUI size="small">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell align="right">{columnLabel || 'Count'}</TableCell>
+                            <TableCell><FormattedMessage id="name" defaultMessage="Name"/></TableCell>
+                            <TableCell align="right">{columnLabel || <FormattedMessage id="count" defaultMessage="Count"/>}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -176,7 +177,9 @@ export const RequestTable = function({ selectedId, label, showType, header, maxC
                     })}
                 </Tabs>
             }
-            title={showAll || itemsCount <= 1 || textFilter ? label : `${itemsCount} ${label}`}
+            title={isFunction(label)
+                ? showAll || itemsCount <= 1 || textFilter ? label() : label(itemsCount)
+                : label}
             loading={loading}
             columnLabel={columnLabel}
             header={ !(error || loading) &&
@@ -184,7 +187,7 @@ export const RequestTable = function({ selectedId, label, showType, header, maxC
                     {Header && <Header items={items}/>}
                     <TextField
                         id="filter"
-                        label={'Filter records...'}
+                        label={<FormattedMessage id="filterRecords" defaultMessage="Filter records..."/>}
                         margin="normal"
                         value={textFilter}
                         onChange={(event) => onFilter(event.target.value)}
@@ -205,7 +208,9 @@ export const RequestTable = function({ selectedId, label, showType, header, maxC
                     {itemsTextFilter.length > maxCount &&
                     <Button
                         onClick={() => onShowAll(!showAll)}>
-                        {showAll ? 'Hide' : 'Show All'}
+                        {showAll
+                            ? <FormattedMessage id="hide" defaultMessage="Hide"/>
+                            : <FormattedMessage id="showAll" defaultMessage="Show All"/>}
                     </Button>}
                     {!(loading || error) &&
                     <Typography

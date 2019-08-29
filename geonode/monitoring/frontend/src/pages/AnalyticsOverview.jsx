@@ -54,6 +54,7 @@ import { RequestTable } from '../components/Table';
 import { RequestChart } from '../components/Chart';
 import { getDetailsPath } from '../utils/RouteUtils';
 import AnalyticsContext from '../context';
+import { FormattedMessage } from 'react-intl';
 
 export default function Analytics({ maxCount = 10, timeRange = 'year', history }) {
     const classes = useStyles();
@@ -82,45 +83,45 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                     <Typography
                         component="h1"
                         variant="h6">
-                        Total Number of Resources
+                        <FormattedMessage id="totalNumberOfResources" defaultMessage="Total Number of Resources"/>
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Layers"
+                        label={<FormattedMessage id="layers" defaultMessage="Layers"/>}
                         requests={{
                             count: {
-                                label: 'Count',
+                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
                                 request: getLayersCount
                             }
                         }} />
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Maps"
+                        label={<FormattedMessage id="maps" defaultMessage="Maps"/>}
                         requests={{
                             count: {
-                                label: 'Count',
+                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
                                 request: getMapsCount
                             }
                         }} />
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Documents"
+                        label={<FormattedMessage id="documents" defaultMessage="Documents"/>}
                         requests={{
                             count: {
-                                label: 'Count',
+                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
                                 request: getDocumentsCount
                             }
                         }} />
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Users"
+                        label={<FormattedMessage id="users" defaultMessage="Users"/>}
                         requests={{
                             count: {
-                                label: 'Count',
+                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
                                 request: getUsersCount
                             }
                         }} />
@@ -137,7 +138,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12}>
                     <RequestChart
-                        label="All Requests Count"/>
+                        label={<FormattedMessage id="allRequestsCount" defaultMessage="All Requests Count"/>}/>
                 </Grid>
                 <Grid item xs={12}>
                     <Divider />
@@ -147,22 +148,22 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                     <Typography
                         component="h1"
                         variant="h6">
-                        Total Number of Requests by Resource
+                        <FormattedMessage id="totalRequestsNumberByResource" defaultMessage="Total Number of Requests by Resource"/>
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Layers"
+                        label={<FormattedMessage id="layers" defaultMessage="Layers"/>}
                         resourceType="layer"
                         globalTimeRange
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
                             }
@@ -170,17 +171,17 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Maps"
+                        label={<FormattedMessage id="maps" defaultMessage="Maps"/>}
                         resourceType="map"
                         globalTimeRange
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
                             }
@@ -188,17 +189,17 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label="Documents"
+                        label={<FormattedMessage id="documents" defaultMessage="Documents"/>}
                         resourceType="document"
                         globalTimeRange
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
                             }
@@ -206,18 +207,18 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
-                        label={homeUrl.id === undefined ? layersUrl.name : 'Homepage'}
+                        label={homeUrl.id === undefined ? layersUrl.name : <FormattedMessage id="homepage" defaultMessage="Homepage"/>}
                         resourceType="url"
                         resourceId={homeUrl.id || layersUrl.id}
                         globalTimeRange
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
                             }
@@ -229,7 +230,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
-                        label={'Most Frequently Accessed Resources'}
+                        label={(count) => <FormattedMessage id="mostFrequentlyAccessedResources10" defaultMessage="{count} Most Frequently Accessed Resources" values={{ count }}/>}
                         onSelect={(resource) => 
                             handleUpdate({
                                 resourceType: resource.type,
@@ -237,12 +238,12 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                             })}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: 'Visitors',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
                             }
@@ -252,10 +253,10 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                     <RequestTable
                         maxCount={maxCount}
                         header={({ items }) => items && items.length > 0 && <Map id="map-overview" data={items} />}
-                        label={'Most Active Countries'}
+                        label={(count) => <FormattedMessage id="mostActiveCountries10" defaultMessage="{count} Most Active Countries" values={{ count }}/>}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 request: getCountriesCount
                             }
                         }} />
@@ -263,10 +264,10 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
-                        label={'Most Frequently Used User Agents Family'}
+                        label={(count) => <FormattedMessage id="mostFrequentlyUsedUserAgentsFamily10" defaultMessage="{count} Most Frequently Used User Agents Family" values={{ count }}/>}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 request: getUserAgentFamilyCount
                             }
                         }} />
@@ -274,10 +275,10 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
-                        label={'Most Frequently Used User Agents'}
+                        label={(count) => <FormattedMessage id="mostFrequentlyUsedUserAgents10" defaultMessage="{count} Most Frequently Used User Agents" values={{ count }}/>}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 request: getUserAgentCount
                             }
                         }} />
@@ -285,7 +286,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
-                        label={'Most Frequently Accessed Layers'}
+                        label={(count) => <FormattedMessage id="mostFrequentlyAccessedLayers10" defaultMessage="{count} Most Frequently Accessed Layers" values={{ count }}/>}
                         resourceType="layer"
                         onSelect={(resource) => 
                             handleUpdate({
@@ -294,12 +295,12 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                             })}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: 'Visitors',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
                             }
@@ -308,7 +309,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
-                        label={'Most Frequently Accessed Maps'}
+                        label={(count) => <FormattedMessage id="mostFrequentlyAccessedMaps10" defaultMessage="{count} Most Frequently Accessed Maps" values={{ count }}/>}
                         resourceType="map"
                         onSelect={(resource) => 
                             handleUpdate({
@@ -317,12 +318,12 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                             })}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: 'Visitors',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
                             }
@@ -331,7 +332,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
-                        label={'Most Frequently Accessed Documents'}
+                        label={(count) => <FormattedMessage id="mostFrequentlyAccessedDocuments10" defaultMessage="{count} Most Frequently Accessed Documents" values={{ count }}/>}
                         resourceType="document"
                         onSelect={(resource) => 
                             handleUpdate({
@@ -340,12 +341,12 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                             })}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: 'Visitors',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
                             }
@@ -354,7 +355,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
-                        label={'Most Frequently Accessed Urls'}
+                        label={(count) => <FormattedMessage id="mostFrequentlyAccessedUrls10" defaultMessage="{count} Most Frequently Accessed Urls" values={{ count }}/>}
                         resourceType="url"
                         onSelect={(resource) => 
                             handleUpdate({
@@ -363,12 +364,12 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                             })}
                         requests={{
                             hits: {
-                                label: 'Hits',
+                                label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
                                 Icon: VisibilityIcon,
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: 'Visitors',
+                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
                             }
@@ -376,7 +377,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12}>
                     <Calendar
-                        label="Layers publication"
+                        label={<FormattedMessage id="layersPublication" defaultMessage="Layers Publication"/>}
                         resourceType="layers"
                         request={getDates}
                         tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}
@@ -385,7 +386,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12}>
                     <Calendar
-                        label="Documents publication"
+                        label={<FormattedMessage id="documentsPublication" defaultMessage="Documents Publication"/>}
                         resourceType="documents"
                         request={getDates}
                         tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}
@@ -394,7 +395,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12}>
                     <Calendar
-                        label="Maps publication"
+                        label={<FormattedMessage id="mapsPublication" defaultMessage="Maps Publication"/>}
                         resourceType="maps"
                         request={getDates}
                         tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}
