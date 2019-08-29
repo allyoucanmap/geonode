@@ -63,7 +63,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
     } = get(match, 'params') || {};
     const { getRange } = ranges[timeRange];
     const timeRangeProperties = getRange(date);
-    const { validFromLabel, validToLabel, nextDate, previousDate } = timeRangeProperties;
+    const { timeRangeLabel, nextDate, previousDate } = timeRangeProperties;
     setTimeRangeProperties(timeRangeProperties);
 
     const { resourceTypes, layersUrl = {}, homeUrl = {} } = useContext(AnalyticsContext);
@@ -185,8 +185,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                 <Grid item xs={12} className={classes.stickyHeader} style={{ paddingBottom: 0 }}>
                     <TimeRangeSelect
                         timeRange={timeRange}
-                        validFromLabel={validFromLabel}
-                        validToLabel={validToLabel}
+                        label={timeRangeLabel}
                         nextDate={nextDate}
                         previousDate={previousDate}
                         onChange={(newTimeRange, newDate) => handleUpdate({

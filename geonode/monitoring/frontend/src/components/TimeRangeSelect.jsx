@@ -32,8 +32,7 @@ export default function TimeRangeSelect({
     timeRange = 'year',
     onChange = () => {},
     readOnly,
-    validFromLabel,
-    validToLabel,
+    label,
     nextDate,
     previousDate,
     children
@@ -62,7 +61,7 @@ export default function TimeRangeSelect({
                     align="center"
                     gutterBottom
                     style={{ flex: 1, margin: '16px 0' }}>
-                    {validFromLabel} - {validToLabel}
+                    {label}
                 </Typography>
                 {!readOnly &&
                 <Button

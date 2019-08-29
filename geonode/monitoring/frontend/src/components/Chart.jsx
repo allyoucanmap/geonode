@@ -72,7 +72,7 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                                 left: 24
                             }}>
                             <XAxis
-                                dataKey="to"
+                                dataKey="from"
                                 tickFormatter={(value) => moment(value).format(format)}
                                 interval={0}
                                 angle={-45}

@@ -52,7 +52,7 @@ const CounterValue = function({ label, count = 0, error, loading, variant = 'h4'
         ? <CircularProgress className={classes.progress} />
         : <Fragment>
             {error
-            ? <ResponseError {...error} label={`${label} ${counterLabel}`}/>
+            ? <ResponseError {...error} label={<span>{label} {counterLabel}</span>}/>
             : count < 999
                 ? <Typography
                     variant={variant}

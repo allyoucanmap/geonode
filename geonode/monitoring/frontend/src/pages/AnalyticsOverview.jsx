@@ -60,7 +60,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
     const classes = useStyles();
     const { getRange } = ranges[timeRange];
     const timeRangeProperties = getRange();
-    const { validFrom, validFromLabel, validTo, validToLabel } = timeRangeProperties;
+    const { validFrom, timeRangeLabel, validTo } = timeRangeProperties;
     setTimeRangeProperties(timeRangeProperties);
 
     const handleUpdate = (params = {}) => {
@@ -133,8 +133,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                     <TimeRangeSelect
                         timeRange={timeRange}
                         readOnly
-                        validFromLabel={validFromLabel}
-                        validToLabel={validToLabel}/>
+                        label={timeRangeLabel}/>
                 </Grid>
                 <Grid item xs={12}>
                     <RequestChart

@@ -31,44 +31,67 @@ export const getTimeRangeProperties = function() {
     return timeRangeProperties;
 };
 
-const getRange = function(type, intervalType, format = 'MMMM Do YYYY, h:mm:ss a', labelFormat = 'MMMM Do YYYY, h:mm:ss a', date) {
+const getRange = function(type, intervalType, format = 'MMMM Do YYYY, h:mm:ss a', timeRangeLabel = () => '', date) {
     const today = moment(Date.now());
-    const validTo = date && moment(date) || today;
-    const validFrom = moment(validTo).subtract(1, type);
-    const range = moment(validTo).diff(validFrom) / 1000;
+    const validTo = (date && moment(date) || today).endOf(type);
+    const validFrom = moment(validTo).startOf(type);
+    const range = Math.round(moment(validTo).diff(validFrom) / 1000);
 
     const intervalFrom = moment(validTo).subtract(1, intervalType);
-    const interval = moment(validTo).diff(intervalFrom) / 1000;
+    const interval = Math.round(moment(validTo).diff(intervalFrom) / 1000);
+
+    const middle = moment(validTo).subtract(0.5, type);
 
     const nextDate = moment(validTo).add(1, type);
+    const previousDate = moment(validFrom).subtract(1, type);
+
     return {
-        validTo: validTo.toISOString().replace('T', ' ').split('.')[0],
-        validFrom: validFrom.toISOString().replace('T', ' ').split('.')[0],
+        validTo: validTo.toISOString(),
+        validFrom: validFrom.toISOString(),
         range,
-        validToLabel: validTo.format(labelFormat),
-        validFromLabel: validFrom.format(labelFormat),
         format,
         interval,
-        nextDate: nextDate.isSameOrAfter(today) ? undefined : nextDate.toISOString(),
-        previousDate: validFrom.toISOString()
+        nextDate: validTo.isSameOrAfter(today) ? undefined : nextDate.toISOString(),
+        previousDate: previousDate.toISOString(),
+        timeRangeLabel: timeRangeLabel(validFrom, validTo)
     };
 };
 
 export const ranges = {
     day: {
         label: 'day',
-        getRange: date => getRange('day', 'hour', 'LT', 'MMM Do ddd YYYY (LT)', date)
+        getRange: date => getRange(
+            'day',
+            'hour',
+            'LT',
+            (from, to) => `${moment(to).format('Do MMMM YYYY')}`,
+            date)
     },
     week: {
         label: 'week',
-        getRange: date => getRange('week', 'day', 'Do ddd', 'MMM Do dddd YYYY', date)
+        getRange: date => getRange(
+            'week',
+            'day',
+            'ddd Do',
+            (from, to) => `${moment(from).format('Do MMMM YYYY')} - ${moment(to).format('Do MMMM YYYY')}`,
+            date)
     },
     month: {
         label: 'month',
-        getRange: date => getRange('month', 'week', 'MMM Do', 'MMMM Do YYYY', date)
+        getRange: date => getRange(
+            'month',
+            'week',
+            'Do MMM',
+            (from, to) => `${moment(to).format('MMMM YYYY')}`,
+            date)
     },
     year: {
         label: 'year',
-        getRange: date => getRange('year', 'month', 'MMM YYYY', 'MMMM YYYY', date)
+        getRange: date => getRange(
+            'year',
+            'month',
+            'MMM YYYY',
+            (from, to) => `${moment(to).format('YYYY')}`,
+            date)
     }
 };
