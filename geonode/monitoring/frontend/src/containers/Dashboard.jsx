@@ -77,7 +77,7 @@ export default function Dashboard({ children, history, location, loading }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        {!loading && <FormattedMessage id={selectedLabel} defaultMessage={selectedLabel}/>}
+                        {!loading && selectedLabel && <FormattedMessage id={selectedLabel} defaultMessage={selectedLabel}/>}
                     </Typography>
                 </Toolbar>
             </AppBar>
