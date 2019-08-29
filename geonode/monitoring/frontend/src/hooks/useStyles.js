@@ -101,10 +101,21 @@ export default makeStyles(theme => ({
         flexDirection: 'column',
         backgroundColor: theme.palette.background.default
     },
+    contentBodyWrapper: {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        flex: 1,
+        overflow: 'hidden'
+    },
     contentBody: {
         flex: 1,
         overflow: 'auto',
-        maxWidth: 'initial'
+        maxWidth: 'initial',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto'
     },
     container: {
         paddingTop: theme.spacing(4),

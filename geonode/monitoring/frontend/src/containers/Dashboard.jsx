@@ -124,12 +124,16 @@ export default function Dashboard({ children, history, location, loading }) {
                     );
                 })}
             </Drawer>
-            <main className={classes.content}>
+            <div className={classes.content} style={{flex: 1}}>
                 <div className={classes.appBarSpacer} />
-                <div className={classes.contentBody}>
-                    {loading ? <LinearProgress/> : children}
+                <div className={classes.contentBodyWrapper}>
+                    <div
+                        className={classes.contentBody}
+                        style={{ position: 'absolute', width: '100%', height: '100%', overflow: 'auto' }}>
+                        {loading ? <LinearProgress/> : children}
+                    </div>
                 </div>
-            </main>
+            </div>
         </div>
     );
 }
