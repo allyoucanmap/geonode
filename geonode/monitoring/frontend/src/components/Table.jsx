@@ -19,7 +19,7 @@
 #########################################################################
 */
 
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import Paper from '@material-ui/core/Paper';
 import useStyles from '../hooks/useStyles';
 import TableMUI from '@material-ui/core/Table';
@@ -73,9 +73,12 @@ const Row = function({ id, type, name, href, label, count, flagIconClassName, sh
     );
 };
 
-const Table = function({ title = '', top, header, loading, items, showType, onSelect, footer, error, columnLabel, selectedId }) {
+const Table = function({ title = '', top, header, loading, items, showType, onSelect, footer, error, columnLabel, selectedId, onUpdateSelected }) {
     const classes = useStyles();
     const selectedItem = (items || []).find(item => selectedId && item.id === selectedId);
+    useEffect(function() {
+        if (onUpdateSelected) onUpdateSelected(selectedItem);
+    }, [ selectedId, items.length ]);
     return (
         <Paper className={classes.paper}>
             {top}
@@ -134,7 +137,7 @@ const Table = function({ title = '', top, header, loading, items, showType, onSe
 
 export default Table;
 
-export const RequestTable = function({ selectedId, label, showType, header, maxCount = 10, timeRange, globalTimeRange, requests = {}, onSelect, resourceType, resourceId, date, eventType  }) {
+export const RequestTable = function({ selectedId, onUpdateSelected, label, showType, header, maxCount = 10, timeRange, globalTimeRange, requests = {}, onSelect, resourceType, resourceId, date, eventType  }) {
     const [textFilter, onFilter] = useState('');
     const keys = Object.keys(requests);
     const [view, setView] = useState(keys[0]);
@@ -152,6 +155,7 @@ export const RequestTable = function({ selectedId, label, showType, header, maxC
     return (
         <Table
             showType={showType}
+            onUpdateSelected={onUpdateSelected}
             selectedId={selectedId}
             top={
                 keys.length > 1 && <Tabs

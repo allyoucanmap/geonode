@@ -19,7 +19,7 @@
 #########################################################################
 */
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import get from 'lodash/get';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -83,6 +83,9 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
         );
     };
 
+    const [selectedResource, setSelectedResource] = useState();
+    const [selectedEvent, setSelectedEvent] = useState();
+    
     return (
         <Container
             maxWidth="lg"
@@ -212,7 +215,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                     label={<FormattedMessage
                                         id="selectedResource"
                                         defaultMessage="Selected Resource {resource}"
-                                        values={{ resource: resourceId }}/>}
+                                        values={{ resource: selectedResource && selectedResource.name || resourceId }}/>}
                                     onDelete={() => handleUpdate({ resourceId: undefined })}
                                     className={classes.chip}
                                     color="primary"/>}
@@ -221,7 +224,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                     label={<FormattedMessage
                                         id="selectedEventType"
                                         defaultMessage="Selected Event {eventType}"
-                                        values={{ eventType }}/>}
+                                        values={{ eventType: selectedEvent && selectedEvent.name || eventType }}/>}
                                     onDelete={() => handleUpdate({ eventType: undefined })}
                                     className={classes.chip}
                                     color="primary"/>}
@@ -259,10 +262,12 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                             defaultMessage="Frequently Accessed Resources"/>}
                         onSelect={(resource) =>
                             handleUpdate({
-                                resourceId: resource.id === resourceId
+                                resourceId: resource.id === parseFloat(resourceId)
                                         ? undefined
                                         : resource.id
                             })}
+                        onUpdateSelected={(selected) =>
+                            setSelectedResource(selected)}
                         requests={{
                             hits: {
                                 label: <FormattedMessage id="hits" defaultMessage="Hits"/>,
@@ -290,6 +295,8 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                         ? undefined
                                         : event.id
                             })}
+                        onUpdateSelected={(selected) =>
+                            setSelectedEvent(selected)}
                         label={<FormattedMessage
                             id="frequentlyUsedEvents"
                             defaultMessage="Frequently Used Events"/>}
@@ -314,6 +321,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         maxCount={maxCount}
                         resourceId={resourceId}
                         resourceType={resourceType}
+                        eventType={eventType}
                         label={<FormattedMessage id="mostActiveVisitors" defaultMessage="Most Active Visitors"/>}
                         requests={{
                             hits: {
