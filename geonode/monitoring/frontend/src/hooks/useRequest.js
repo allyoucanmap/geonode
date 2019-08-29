@@ -21,7 +21,7 @@
 
 import { useEffect, useState } from 'react';
 
-export default function useRequest (request, params, update = [], disabled) {
+export default function useRequest (request, params, update = []) {
     const [response, setResponse] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -30,18 +30,14 @@ export default function useRequest (request, params, update = [], disabled) {
         setLoading(true);
         setError(null);
         let isMounted = true;
-        if (!disabled) {
-            request(params)
-                .then(([err, res]) => {
-                    if (isMounted) {
-                        setResponse(res || {});
-                        setLoading(false);
-                        setError(err);
-                    }
-                });
-        } else {
-            setLoading(false);
-        }
+        request(params)
+            .then(([err, res]) => {
+                if (isMounted) {
+                    setResponse(res || {});
+                    setLoading(false);
+                    setError(err);
+                }
+            });
         return function() {
             isMounted = false;
         }

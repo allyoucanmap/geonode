@@ -37,6 +37,7 @@ import {
 import useRequest from '../hooks/useRequest';
 import ResponseError from './ResponseError';
 import { FormattedMessage } from 'react-intl';
+import numeral from 'numeral';
 
 export const RequestChart = function ({ label, timeRange, globalTimeRange, resourceType, resourceId, date, eventType }) {
     const classes = useStyles();
@@ -56,7 +57,7 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
             </Typography>
                 {loading || userLoading
                     ? <CircularProgress className={classes.progress} />
-                    : <ResponsiveContainer
+                    : !(userError && hitsError) && <ResponsiveContainer
                         width="99%"
                         height="100%">
                         <BarChart
@@ -68,23 +69,31 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                             margin={{
                                 top: 16,
                                 right: 16,
-                                bottom: 20,
+                                bottom: 35,
                                 left: 24
                             }}>
                             <XAxis
                                 dataKey="from"
-                                tickFormatter={(value) => moment(value).format(format)}
+                                tickFormatter={(value) => moment.utc(value).format(format)}
                                 interval={0}
                                 angle={-45}
+                                tickMargin={20}
                                 textAnchor="end"
-                                fontSize="11"/>
-                            <YAxis>
-                                <Label angle={270} position="left" style={{ textAnchor: 'middle' }}>
+                                fontSize="11">
+                                <Label position="end"  style={{ textAnchor: 'middle', fontSize: 10 }}>
+                                    Time UTC
+                                </Label>
+                            </XAxis>
+                            <YAxis
+                                fontSize="11"
+                                allowDecimals={false}
+                                tickFormatter={(value) => numeral(value).format('Oa')}>
+                                <Label position="left" style={{ textAnchor: 'middle', fontSize: 10 }} >
                                     Count
                                 </Label>
                             </YAxis>
                             <Tooltip
-                                labelFormatter={(value) => `Date ${moment(value).format(format)}`} />
+                                labelFormatter={(value) => `Date ${moment.utc(value).format(format)}`} />
                             <Bar type="monotone" dataKey="hits" fill="#2c689c" />
                             <Bar type="monotone" dataKey="visitors" fill="#ff8f31" />
                         </BarChart>

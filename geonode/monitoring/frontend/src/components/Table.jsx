@@ -73,12 +73,20 @@ const Row = function({ id, type, name, href, label, count, flagIconClassName, sh
     );
 };
 
-const Table = function({ title = '', top, header, loading, items, showType, onSelect, footer, error, columnLabel, selectedId, onUpdateSelected }) {
+const Table = function({ title = '', top, header, loading, items, showType, onSelect, footer, error, columnLabel, selectedId, onUpdateSelected, itemsFormatter }) {
     const classes = useStyles();
-    const selectedItem = (items || []).find(item => selectedId && item.id === selectedId);
+    const [formattedItems, setFormatedItems] = useState(items);
+
+    useEffect(function() {
+        setFormatedItems(items && itemsFormatter ? itemsFormatter(items) : items);
+    }, [ items.length ]);
+
+    const selectedItem= (formattedItems || []).find(item => selectedId && item.id === selectedId);
+
     useEffect(function() {
         if (onUpdateSelected) onUpdateSelected(selectedItem);
-    }, [ selectedId, items.length ]);
+    }, [ selectedId, formattedItems.length ]);
+
     return (
         <Paper className={classes.paper}>
             {top}
@@ -110,7 +118,7 @@ const Table = function({ title = '', top, header, loading, items, showType, onSe
                             showType={showType}
                             onSelect={onSelect}
                             selectedId={selectedId}/>}
-                        {items
+                        {formattedItems
                             .filter(({ id }) => !selectedId || id !== selectedId)
                             .map(({ id, type, name, href, label, count, flagIconClassName }) => (
                             <Row
@@ -137,7 +145,7 @@ const Table = function({ title = '', top, header, loading, items, showType, onSe
 
 export default Table;
 
-export const RequestTable = function({ selectedId, onUpdateSelected, label, showType, header, maxCount = 10, timeRange, globalTimeRange, requests = {}, onSelect, resourceType, resourceId, date, eventType  }) {
+export const RequestTable = function({ selectedId, onUpdateSelected, label, showType, header, maxCount = 10, timeRange, globalTimeRange, requests = {}, onSelect, resourceType, resourceId, date, eventType, itemsFormatter  }) {
     const [textFilter, onFilter] = useState('');
     const keys = Object.keys(requests);
     const [view, setView] = useState(keys[0]);
@@ -157,6 +165,7 @@ export const RequestTable = function({ selectedId, onUpdateSelected, label, show
             showType={showType}
             onUpdateSelected={onUpdateSelected}
             selectedId={selectedId}
+            itemsFormatter={itemsFormatter}
             top={
                 keys.length > 1 && <Tabs
                     value={view}

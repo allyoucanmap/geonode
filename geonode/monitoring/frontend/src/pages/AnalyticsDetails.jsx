@@ -66,7 +66,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
     const { timeRangeLabel, nextDate, previousDate } = timeRangeProperties;
     setTimeRangeProperties(timeRangeProperties);
 
-    const { resourceTypes, layersUrl = {}, homeUrl = {} } = useContext(AnalyticsContext);
+    const { resourceTypes, eventTypes, layersUrl = {}, homeUrl = {} } = useContext(AnalyticsContext);
 
     const resourceTypeValue = resourceTypes.find(({value}) => resourceType === value) || {};
 
@@ -203,6 +203,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                         eventType: undefined
                                     })}
                                     suggestions={resourceTypes
+                                        .filter(({ value }) => value !== resourceType)
                                         .map(({ label, ...option }) => ({
                                             ...option,
                                             label: <FormattedMessage id={(label || '').toLowerCase()} defaultMessage={label}/>
@@ -213,7 +214,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                     size="small"
                                     label={<FormattedMessage
                                         id="selectedResource"
-                                        defaultMessage="Selected Resource {resource}"
+                                        defaultMessage="Selected Resource: {resource}"
                                         values={{ resource: selectedResource && selectedResource.name || resourceId }}/>}
                                     onDelete={() => handleUpdate({ resourceId: undefined })}
                                     className={classes.chip}
@@ -222,8 +223,8 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                     size="small"
                                     label={<FormattedMessage
                                         id="selectedEventType"
-                                        defaultMessage="Selected Event {eventType}"
-                                        values={{ eventType: selectedEvent && selectedEvent.name || eventType }}/>}
+                                        defaultMessage="Selected Event: {eventType}"
+                                        values={{ eventType: selectedEvent && selectedEvent.label || eventType }}/>}
                                     onDelete={() => handleUpdate({ eventType: undefined })}
                                     className={classes.chip}
                                     color="primary"/>}
@@ -288,6 +289,12 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         maxCount={maxCount}
                         resourceType={resourceType}
                         selectedId={eventType}
+                        itemsFormatter={(items) => 
+                            items.map((item) => {
+                                const event = eventTypes.find((e) => e.value === item.name) || {};
+                                return { ...item, label: event.label };
+                            })
+                        }
                         onSelect={(event) =>
                             handleUpdate({
                                 eventType: event.id === eventType

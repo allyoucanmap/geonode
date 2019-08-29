@@ -93,8 +93,16 @@ export const getUsersCount = () => {
         .catch((e) => [parseError(e), null]);
 };
 
-export const getDates = ({ resourceType = 'layers' }) => {
-    return axios.get(`/api/${resourceType}/?limit=999999`)
+export const getDates = ({ resourceType = 'layers', timeRange }) => {
+    const { getRange } = ranges[timeRange] || {};
+    const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
+    return axios.get(`/api/${resourceType}/?limit=999999`, {
+        params: {
+            limit: 999999,
+            date__gte: validFrom,
+            date__lte: validTo
+        }
+    })
         .then(({ data = {} } = {}) => {
             const { objects = [] } = data;
             const obj = objects.map(({ id, name, title, owner__username, date }) => {
@@ -191,8 +199,9 @@ export const getResourceTypes = () => {
             return [null, {
                 resourceTypes: resource_types.map((resourceType) => ({
                     ...resourceType,
+                    key: resourceType.name,
                     value: resourceType.name,
-                    label: resourceType.title || resourceType.type
+                    label: resourceType.type_label || resourceType.type
                 }))
             }];
         })
@@ -203,7 +212,11 @@ export const getEventTypes = () => {
     return axios.get(`${apiUrl}/event_types/`)
         .then(({ data = {} } = {}) => {
             const { event_types = [] } = data;
-            return [null, { eventTypes: event_types }];
+            return [null, { eventTypes: event_types.map((eventType) => ({
+                ...eventType,
+                key: eventType.name,
+                label: eventType.type_label,
+                value: eventType.name })) }];
         })
         .catch((e) => [parseError(e), null]);
 };

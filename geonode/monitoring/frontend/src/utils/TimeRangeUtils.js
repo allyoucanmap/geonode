@@ -32,19 +32,16 @@ export const getTimeRangeProperties = function() {
 };
 
 const getRange = function(type, intervalType, format = 'MMMM Do YYYY, h:mm:ss a', timeRangeLabel = () => '', date) {
-    const today = moment(Date.now());
-    const validTo = (date && moment(date) || today).endOf(type);
-    const validFrom = moment(validTo).startOf(type);
-    const range = Math.round(moment(validTo).diff(validFrom) / 1000);
+    const today = moment.utc();
+    const validTo = (date && moment.utc(date) || today.clone()).endOf(type);
+    const validFrom = moment(validTo.clone()).startOf(type);
+    const range = Math.round(moment(validTo.clone()).diff(validFrom.clone()) / 1000);
 
-    const intervalFrom = moment(validTo).subtract(1, intervalType);
-    const interval = Math.round(moment(validTo).diff(intervalFrom) / 1000);
+    const intervalFrom = moment(validTo.clone()).subtract(1, intervalType);
+    const interval = Math.round(moment(validTo.clone()).diff(intervalFrom) / 1000);
 
-    const middle = moment(validTo).subtract(0.5, type);
-
-    const nextDate = moment(validTo).add(1, type);
-    const previousDate = moment(validFrom).subtract(1, type);
-
+    const nextDate = moment(validTo.clone()).add(1, type);
+    const previousDate = moment(validFrom.clone()).subtract(1, type);
     return {
         validTo: validTo.toISOString(),
         validFrom: validFrom.toISOString(),

@@ -33,6 +33,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { FormattedMessage } from 'react-intl';
 
 export default function Calendar({ label = '', tooltip = () => 'tooltip', resourceType = 'layers', startDate, endDate, request }) {
     const [selected, setSelected] = useState(null);
