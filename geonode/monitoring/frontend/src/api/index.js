@@ -95,7 +95,7 @@ export const getUsersCount = () => {
 
 export const getDates = ({ resourceType = 'layers', timeRange }) => {
     const { getRange } = ranges[timeRange] || {};
-    const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
+    const { validFrom, validTo } = getRange && getRange() || getTimeRangeProperties();
     return axios.get(`/api/${resourceType}/?limit=999999`, {
         params: {
             limit: 999999,
@@ -151,7 +151,11 @@ export const getDates = ({ resourceType = 'layers', timeRange }) => {
 };
 
 export const getLayersCount = () => {
-    return axios.get('/api/layers/?limit=1')
+    return axios.get('/api/layers/', {
+            params: {
+                limit: 1
+            }
+        })
         .then(({ data = {} } = {}) => {
             const { meta = {} } = data;
             const { total_count: totalCount } = meta;
@@ -161,7 +165,11 @@ export const getLayersCount = () => {
 };
 
 export const getMapsCount = () => {
-    return axios.get('/api/maps/?limit=1')
+    return axios.get('/api/maps/', {
+            params: {
+                limit: 1
+            }
+        })
         .then(({ data = {} } = {}) => {
             const { meta = {} } = data;
             const { total_count: totalCount } = meta;
@@ -171,7 +179,11 @@ export const getMapsCount = () => {
 };
 
 export const getDocumentsCount = () => {
-    return axios.get('/api/documents/?limit=1')
+    return axios.get('/api/documents/', {
+            params: {
+                limit: 1
+            }
+        })
         .then(({ data = {} } = {}) => {
             const { meta = {} } = data;
             const { total_count: totalCount } = meta;
@@ -529,4 +541,28 @@ export const getVisitorsList = ({ resourceType, resource, timeRange, eventType }
         return [null, { items: response, totalCount: response.length }];
     })
     .catch((e) => [parseError(e), null]);
+};
+
+export const getEventCountOnResource = ({ resourceType, resource, timeRange, eventType }) => {
+    const { getRange } = ranges[timeRange] || {};
+    const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
+    return axios.get(`${apiUrl}/metric_data/request.count`, {
+            params: {
+                group_by: 'resource',
+                valid_from: validFrom,
+                valid_to: validTo,
+                interval: range,
+                ...parseMetricsParams({ resourceType, eventType, resource })
+            }
+        })
+        .then(({ data }) => {
+            const response = (get(data, 'data.data[0].data') || [])
+                .map(({ label, val, user } = {}) => ({
+                    id: label,
+                    name: user || label,
+                    count: parseFloat(val)
+                }));
+            return [null, { count: response.length }];
+        })
+        .catch((e) => [parseError(e), null]);
 };

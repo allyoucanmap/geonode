@@ -44,7 +44,7 @@ import Link from '@material-ui/core/Link';
 import { FormattedMessage } from 'react-intl';
 import isFunction from 'lodash/isFunction';
 
-const Row = function({ id, type, name, href, label, count, flagIconClassName, showType, onSelect, selectedId }) {
+const Row = function({ id, type, title, name, href, label, count, flagIconClassName, showType, onSelect, selectedId }) {
     const classes = useStyles();
     return (
         <TableRow
@@ -66,7 +66,7 @@ const Row = function({ id, type, name, href, label, count, flagIconClassName, sh
                 </Link>}
                 {flagIconClassName && <span className={flagIconClassName} style={{ marginRight: 8 }}/>}
                 {showType && type ? <span style={{fontStyle: 'italic'}}>{`${type} - `}</span> : ''}
-                {label || name || `Identifier: ${id}`}
+                {label || title || name || `Identifier: ${id}`}
             </TableCell>
             <TableCell align="right">{count}</TableCell>
         </TableRow>
@@ -120,9 +120,10 @@ const Table = function({ title = '', top, header, loading, items, showType, onSe
                             selectedId={selectedId}/>}
                         {formattedItems
                             .filter(({ id }) => !selectedId || id !== selectedId)
-                            .map(({ id, type, name, href, label, count, flagIconClassName }) => (
+                            .map(({ id, type, title: rowTitle, name, href, label, count, flagIconClassName }) => (
                             <Row
                                 key={name}
+                                title={rowTitle}
                                 id={id}
                                 type={type}
                                 name={name}

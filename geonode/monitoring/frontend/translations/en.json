@@ -3,7 +3,7 @@
     "messages": {
         "count": "Count",
         "hits": "Hits",
-        "uniqueVisits": "Unique Visits",
+        "uniqueVisits": "Sessions",
         "visits": "Visits",
         "requestError": "Request Error",
         "name": "Name",
@@ -43,7 +43,8 @@
         "mostActiveUserAgentsFamily": "Most Frequently Used User Agents Family",
         "mostActiveUserAgents": "Most Frequently Used User Agents",
         "users": "Users",
-        "totalNumberOfResources": "Total Number of Resources",
+        "currentNumberOfResources": "Current Number of Resources",
+        "numberOfCreatedResources": "Number of Created Resources",
         "allRequestsCount": "All Requests Count",
         "totalRequestsNumberByResource": "Total Number of Requests by Resource",
         "layersPublication": "Layers Publication",

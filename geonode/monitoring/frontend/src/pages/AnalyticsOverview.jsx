@@ -83,11 +83,13 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                     <Typography
                         component="h1"
                         variant="h6">
-                        <FormattedMessage id="totalNumberOfResources" defaultMessage="Total Number of Resources"/>
+                        <FormattedMessage id="currentNumberOfResources" defaultMessage="Current Number of Resources"/>
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
+                        timeRange={timeRange}
+                        globalTimeRange
                         label={<FormattedMessage id="layers" defaultMessage="Layers"/>}
                         requests={{
                             count: {
@@ -98,6 +100,8 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
+                        timeRange={timeRange}
+                        globalTimeRange
                         label={<FormattedMessage id="maps" defaultMessage="Maps"/>}
                         requests={{
                             count: {
@@ -108,6 +112,8 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
+                        timeRange={timeRange}
+                        globalTimeRange
                         label={<FormattedMessage id="documents" defaultMessage="Documents"/>}
                         requests={{
                             count: {
@@ -118,6 +124,8 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 </Grid>
                 <Grid item xs={12} md={3}>
                     <RequestCounter
+                        timeRange={timeRange}
+                        globalTimeRange
                         label={<FormattedMessage id="users" defaultMessage="Users"/>}
                         requests={{
                             count: {
