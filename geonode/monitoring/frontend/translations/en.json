@@ -5,6 +5,7 @@
         "hits": "Hits",
         "uniqueVisitors": "Unique Visitors",
         "anonymousSessions": "Anonymous Sessions",
+        "sessions": "Sessions",
         "link": "Link",
         "visits": "Visits",
         "requestError": "Request Error",

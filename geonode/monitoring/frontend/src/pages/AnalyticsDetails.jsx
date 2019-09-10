@@ -423,8 +423,8 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                         eventType={eventType}
                         label={<FormattedMessage id="mostActiveVisitors" defaultMessage="Most Active Visitors"/>}
                         requests={{
-                            hits: {
-                                label: <FormattedMessage id="visits" defaultMessage="Visits"/>,
+                            sessions: {
+                                label: <FormattedMessage id="sessions" defaultMessage="Sessions"/>,
                                 request: getVisitorsList
                             }
                         }} />
