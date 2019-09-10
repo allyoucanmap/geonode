@@ -34,7 +34,6 @@ import {
     getUserAgentFamilyCount,
     getCountriesCount,
     getUserAgentCount,
-    getDates,
     getUsersCount,
     getLayersCount,
     getMapsCount,
@@ -44,7 +43,8 @@ import {
     getResourcesHitsList,
     getResourcesVisitorsList,
     getRequestAnonymousCount,
-    getResourcesAnonymousList
+    getResourcesAnonymousList,
+    getEventsDates
 } from '../api';
 
 import { ranges, setTimeRangeProperties } from '../utils/TimeRangeUtils';
@@ -63,7 +63,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
     const classes = useStyles();
     const { getRange } = ranges[timeRange];
     const timeRangeProperties = getRange();
-    const { validFrom, timeRangeLabel, validTo } = timeRangeProperties;
+    const { timeRangeLabel } = timeRangeProperties;
     setTimeRangeProperties(timeRangeProperties);
 
     const handleUpdate = (params = {}) => {
@@ -438,29 +438,32 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12}>
                     <Calendar
                         label={<FormattedMessage id="layersPublication" defaultMessage="Layers Publication"/>}
-                        resourceType="layers"
-                        request={getDates}
-                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}
-                        startDate={new Date(validFrom)}
-                        endDate={new Date(validTo)} />
+                        resourceType="layer"
+                        eventType="upload"
+                        globalTimeRange
+                        timeRange={timeRange}
+                        request={getEventsDates}
+                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}/>
                 </Grid>
                 <Grid item xs={12}>
                     <Calendar
                         label={<FormattedMessage id="documentsPublication" defaultMessage="Documents Publication"/>}
-                        resourceType="documents"
-                        request={getDates}
-                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}
-                        startDate={new Date(validFrom)}
-                        endDate={new Date(validTo)} />
+                        resourceType="document"
+                        eventType="upload"
+                        globalTimeRange
+                        timeRange={timeRange}
+                        request={getEventsDates}
+                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}/>
                 </Grid>
                 <Grid item xs={12}>
                     <Calendar
                         label={<FormattedMessage id="mapsPublication" defaultMessage="Maps Publication"/>}
-                        resourceType="maps"
-                        request={getDates}
-                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}
-                        startDate={new Date(validFrom)}
-                        endDate={new Date(validTo)} />
+                        resourceType="map"
+                        eventType="create"
+                        globalTimeRange
+                        timeRange={timeRange}
+                        request={getEventsDates}
+                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`} />
                 </Grid>
             </Grid>
         </Container>

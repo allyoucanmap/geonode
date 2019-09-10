@@ -34,11 +34,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { FormattedMessage } from 'react-intl';
+import LinkIcon from '@material-ui/icons/Link';
+import CloseIcon from '@material-ui/icons/Close';
+import Link from '@material-ui/core/Link';
 
-export default function Calendar({ label = '', tooltip = () => 'tooltip', resourceType = 'layers', startDate, endDate, request }) {
+export default function Calendar({ globalTimeRange, label = '', tooltip = () => 'tooltip', eventType, resourceType = 'layers', timeRange, request, date }) {
     const [selected, setSelected] = useState(null);
-    const [response, loading, error] = useRequest(request, { resourceType }, [ resourceType ]);
-    const { items = [], maxCount } = response || {};
+    const [response, loading, error] = useRequest(request, { resourceType, eventType, timeRange: globalTimeRange ? undefined : timeRange }, [ resourceType, eventType, timeRange, date ]);
+    const { items = [], maxCount, startDate, endDate } = response || {};
     const classes = useStyles();
     return (
         <Paper className={classes.paper}>
@@ -82,19 +85,27 @@ export default function Calendar({ label = '', tooltip = () => 'tooltip', resour
                     <TableHead>
                         <TableRow>
                             <TableCell><FormattedMessage id="name" defaultMessage="Name"/></TableCell>
-                            <TableCell><FormattedMessage id="owner" defaultMessage="Owner"/></TableCell>
-                            <TableCell align="right"><FormattedMessage id="time" defaultMessage="Time"/></TableCell>
+                            <TableCell align="right"><FormattedMessage id="link" defaultMessage="Link"/></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {(selected.items || []).map(({ id, title, name, owner, formatHour }) => (
+                        {(selected.items || []).map(({ id, title, name, href }) => (
                             <TableRow
                                 key={name}>
                                 <TableCell component="th" scope="row">
                                     {title || name || `Identifier: ${id}`}
                                 </TableCell>
-                                <TableCell>{owner}</TableCell>
-                                <TableCell align="right">{formatHour}</TableCell>
+                                <TableCell align="right">
+                                {href
+                                ? <Link
+                                    href={href}
+                                    color="textPrimary"
+                                    target="_blank"
+                                    onClick={event => event.stopPropagation()}>
+                                    <LinkIcon/>
+                                </Link>
+                                : <CloseIcon color="error"/>}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

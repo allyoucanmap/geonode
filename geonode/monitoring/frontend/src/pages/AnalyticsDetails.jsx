@@ -45,7 +45,8 @@ import {
     getRequestVisitorsCount,
     getResourcesAnonymousList,
     getRequestAnonymousCount,
-    getEventCountOnResource
+    getEventCountOnResource,
+    getEventsDates
 } from '../api';
 import { ranges, setTimeRangeProperties } from '../utils/TimeRangeUtils';
 import { RequestChart } from '../components/Chart';
@@ -56,6 +57,7 @@ import { RequestCounter } from '../components/Counter';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Calendar from '../components/Calendar';
 
 export default function AnalyticsDetails({ maxCount = 10, match, history }) {
     const classes = useStyles();
@@ -478,6 +480,39 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                 request: getUserAgentCount
                             }
                         }} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Calendar
+                        label={<FormattedMessage id="layersPublication" defaultMessage="Layers Publication"/>}
+                        resourceType="layer"
+                        eventType="upload"
+                        globalTimeRange
+                        date={date}
+                        timeRange={timeRange}
+                        request={getEventsDates}
+                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <Calendar
+                        label={<FormattedMessage id="documentsPublication" defaultMessage="Documents Publication"/>}
+                        resourceType="document"
+                        eventType="upload"
+                        globalTimeRange
+                        date={date}
+                        timeRange={timeRange}
+                        request={getEventsDates}
+                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <Calendar
+                        label={<FormattedMessage id="mapsPublication" defaultMessage="Maps Publication"/>}
+                        resourceType="map"
+                        eventType="create"
+                        globalTimeRange
+                        date={date}
+                        timeRange={timeRange}
+                        request={getEventsDates}
+                        tooltip={({ count = 0 }) => `${count} ${count === 1 ? 'publication' : 'publications'}`} />
                 </Grid>
             </Grid>
         </Container>

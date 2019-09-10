@@ -666,3 +666,45 @@ export const getEventCountOnResource = ({ resourceType, resource, timeRange, eve
         })
         .catch((e) => [parseError(e), null]);
 };
+
+export const getEventsDates = ({ resourceType, timeRange, eventType, resource }) => {
+    const { getRange } = ranges[timeRange] || {};
+    const { validFrom, validTo } = getRange && getRange() || getTimeRangeProperties();
+    return axios.get(`${apiUrl}/metric_data/request.count`, {
+        params: {
+            group_by: 'resource',
+            valid_from: validFrom,
+            valid_to: validTo,
+            interval: '86400', // DAY
+            ...parseMetricsParams({ resourceType, eventType, resource })
+        }
+    })
+        .then(({ data = {} } = {}) => {
+                const items = (get(data, 'data.data') || [])
+                    .map(({ valid_from: date, data }) => {
+                        return {
+                            date: moment(date).format('YYYY-MM-DD'),
+                            formatDate: moment(date).format('MMMM Do YYYY'),
+                            count: data.length,
+                            items: data.map(({ resource = {} } = {}) => {
+                                return {
+                                    ...resource,
+                                    title: resource.title || resource.name,
+                                    formatHour: moment(date).format('h:mm:ss a')
+                                };
+                            })
+                        };
+                    });
+            const counts = items.map(({ count }) => count);
+            const { getRange: getYearRange } = ranges.year || {};
+            const { validFrom: startDate, validTo: endDate } = getYearRange && getYearRange() || {};
+            return [null, {
+                items,
+                minCount: min(counts),
+                maxCount: max(counts),
+                startDate: new Date(startDate),
+                endDate: new Date(endDate)
+            }];
+        })
+        .catch((e) => [parseError(e), null]);
+};

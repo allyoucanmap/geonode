@@ -27,6 +27,8 @@ $color-secondary: #ff8f31;
 $color-dark: #333333;
 $calendar-heatmap-color: lighten($color-primary, 15%);
 
+.react-calendar-heatmap .color-empty { fill: transparent; stroke: #eeeeee; }
+.react-calendar-heatmap .color-scale-0 { fill: #eeeeee; }
 .react-calendar-heatmap .color-scale-1 { fill: lighten($calendar-heatmap-color, 30%); }
 .react-calendar-heatmap .color-scale-2 { fill: lighten($calendar-heatmap-color, 20%); }
 .react-calendar-heatmap .color-scale-3 { fill: lighten($calendar-heatmap-color, 10%); }
