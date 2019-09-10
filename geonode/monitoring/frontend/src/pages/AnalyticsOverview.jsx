@@ -26,6 +26,7 @@ import Grid from '@material-ui/core/Grid';
 import useStyles from '../hooks/useStyles';
 import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
+import PersonOutlinedIcon from '@material-ui/icons/PersonOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Divider from '@material-ui/core/Divider';
 
@@ -41,7 +42,9 @@ import {
     getRequestHitsCount,
     getRequestVisitorsCount,
     getResourcesHitsList,
-    getResourcesVisitorsList
+    getResourcesVisitorsList,
+    getRequestAnonymousCount,
+    getResourcesAnonymousList
 } from '../api';
 
 import { ranges, setTimeRangeProperties } from '../utils/TimeRangeUtils';
@@ -170,9 +173,14 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getRequestAnonymousCount
                             }
                         }}/>
                 </Grid>
@@ -188,9 +196,14 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getRequestAnonymousCount
                             }
                         }} />
                 </Grid>
@@ -206,9 +219,14 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getRequestAnonymousCount
                             }
                         }} />
                 </Grid>
@@ -225,9 +243,14 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getRequestHitsCount
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getRequestAnonymousCount
                             }
                         }}  />
                 </Grid>
@@ -237,6 +260,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
+                        showLink
                         label={(count) => <FormattedMessage id="mostFrequentlyAccessedResources10" defaultMessage="{count} Most Frequently Accessed Resources" values={{ count }}/>}
                         onSelect={(resource) => 
                             handleUpdate({
@@ -250,9 +274,14 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getResourcesAnonymousList
                             }
                         }} />
                 </Grid>
@@ -293,6 +322,7 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
+                        showLink
                         label={(count) => <FormattedMessage id="mostFrequentlyAccessedLayers10" defaultMessage="{count} Most Frequently Accessed Layers" values={{ count }}/>}
                         resourceType="layer"
                         onSelect={(resource) => 
@@ -307,15 +337,21 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getResourcesAnonymousList
                             }
                         }} />
                 </Grid>
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
+                        showLink
                         label={(count) => <FormattedMessage id="mostFrequentlyAccessedMaps10" defaultMessage="{count} Most Frequently Accessed Maps" values={{ count }}/>}
                         resourceType="map"
                         onSelect={(resource) => 
@@ -330,15 +366,21 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getResourcesAnonymousList
                             }
                         }} />
                 </Grid>
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
+                        showLink
                         label={(count) => <FormattedMessage id="mostFrequentlyAccessedDocuments10" defaultMessage="{count} Most Frequently Accessed Documents" values={{ count }}/>}
                         resourceType="document"
                         onSelect={(resource) => 
@@ -353,15 +395,21 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getResourcesAnonymousList
                             }
                         }} />
                 </Grid>
                 <Grid item xs={12} md={12} lg={6}>
                     <RequestTable
                         maxCount={maxCount}
+                        showLink
                         label={(count) => <FormattedMessage id="mostFrequentlyAccessedUrls10" defaultMessage="{count} Most Frequently Accessed Urls" values={{ count }}/>}
                         resourceType="url"
                         onSelect={(resource) => 
@@ -376,9 +424,14 @@ export default function Analytics({ maxCount = 10, timeRange = 'year', history }
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getResourcesAnonymousList
                             }
                         }} />
                 </Grid>

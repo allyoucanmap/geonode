@@ -354,7 +354,33 @@ export const getResourcesVisitorsInterval = ({ resourceType, timeRange, resource
     const { validFrom, validTo, format, interval } = getRange && getRange() || getTimeRangeProperties();
     return axios.get(`${apiUrl}/metric_data/request.users`, {
         params: {
+            group_by: 'user',
+            valid_from: validFrom,
+            valid_to: validTo,
+            interval: interval,
+            ...parseMetricsParams({ resourceType, eventType, resource })
+        }
+    })
+    .then(({ data }) => {
+        const response = (get(data, 'data.data') || [])
+            .map(({valid_from, valid_to, data: count}) => ({
+                from: valid_from,
+                to: valid_to,
+                val: parseFloat(get(count, '[0].val') || 0)
+            }));
+        const count = response.reduce((acc, { val }) => acc + (val || 0), 0);
+        return [null, { items: response, count, format }];
+    })
+    .catch((e) => [parseError(e), null]);
+};
+
+export const getResourcesAnonymousInterval = ({ resourceType, timeRange, resource, eventType }) => {
+    const { getRange } = ranges[timeRange] || {};
+    const { validFrom, validTo, format, interval } = getRange && getRange() || getTimeRangeProperties();
+    return axios.get(`${apiUrl}/metric_data/request.users`, {
+        params: {
             group_by: 'label',
+            user: 'AnonymousUser',
             valid_from: validFrom,
             valid_to: validTo,
             interval: interval,
@@ -407,7 +433,31 @@ export const getRequestVisitorsCount = ({ resourceType, timeRange, eventType, re
     const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
     return axios.get(`${apiUrl}/metric_data/request.users`, {
         params: {
+            group_by: 'user',
+            valid_from: validFrom,
+            valid_to: validTo,
+            interval: range,
+            ...parseMetricsParams({ resourceType, eventType, resource })
+        }
+    })
+    .then(({ data }) => {
+        const response = (get(data, 'data.data[0].data') || [])
+            .map(({ resource = {}, val } = {}) => ({
+                ...resource,
+                count: parseFloat(val)
+            }));
+        return [null, { ...(response[0] || {}) }];
+    })
+    .catch((e) => [parseError(e), null]);
+};
+
+export const getRequestAnonymousCount = ({ resourceType, timeRange, eventType, resource }) => {
+    const { getRange } = ranges[timeRange] || {};
+    const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
+    return axios.get(`${apiUrl}/metric_data/request.users`, {
+        params: {
             group_by: 'label',
+            user: 'AnonymousUser',
             valid_from: validFrom,
             valid_to: validTo,
             interval: range,
@@ -449,12 +499,36 @@ export const getResourcesHitsList = ({ resourceType, timeRange, eventType }) => 
     .catch((e) => [parseError(e), null]);
 };
 
+export const getResourcesAnonymousList = ({ resourceType, timeRange, eventType }) => {
+    const { getRange } = ranges[timeRange] || {};
+    const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
+    return axios.get(`${apiUrl}/metric_data/request.users`, {
+        params: {
+            group_by: 'resource_on_label',
+            user: 'AnonymousUser',
+            valid_from: validFrom,
+            valid_to: validTo,
+            interval: range,
+            ...parseMetricsParams({ resourceType, eventType })
+        }
+    })
+    .then(({ data }) => {
+        const response = (get(data, 'data.data[0].data') || [])
+            .map(({ resource = {}, val } = {}) => ({
+                ...resource,
+                count: parseFloat(val)
+            }));
+        return [null, { items: response, totalCount: response.length }];
+    })
+    .catch((e) => [parseError(e), null]);
+};
+
 export const getResourcesVisitorsList = ({ resourceType, timeRange, eventType }) => {
     const { getRange } = ranges[timeRange] || {};
     const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
     return axios.get(`${apiUrl}/metric_data/request.users`, {
         params: {
-            group_by: 'resource_no_label',
+            group_by: 'resource_on_user',
             valid_from: validFrom,
             valid_to: validTo,
             interval: range,
@@ -501,7 +575,32 @@ export const getEventsVisitorsList = ({ resourceType, resource, timeRange }) => 
     const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
     return axios.get(`${apiUrl}/metric_data/request.users`, {
         params: {
+            group_by: 'event_type_on_user',
+            valid_from: validFrom,
+            valid_to: validTo,
+            interval: range,
+            ...parseMetricsParams({ resourceType, resource })
+        }
+    })
+    .then(({ data }) => {
+        const response = (get(data, 'data.data[0].data') || [])
+            .map(({ event_type, val } = {}) => ({
+                name: event_type,
+                id: event_type,
+                count: parseFloat(val)
+            }));
+        return [null, { items: response, totalCount: response.length }];
+    })
+    .catch((e) => [parseError(e), null]);
+};
+
+export const getEventsAnonymousList = ({ resourceType, resource, timeRange }) => {
+    const { getRange } = ranges[timeRange] || {};
+    const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
+    return axios.get(`${apiUrl}/metric_data/request.users`, {
+        params: {
             group_by: 'event_type_on_label',
+            user: 'AnonymousUser',
             valid_from: validFrom,
             valid_to: validTo,
             interval: range,
@@ -525,6 +624,7 @@ export const getVisitorsList = ({ resourceType, resource, timeRange, eventType }
     const { validFrom, validTo, range } = getRange && getRange() || getTimeRangeProperties();
     return axios.get(`${apiUrl}/metric_data/request.users`, {
         params: {
+            group_by: 'user_on_label',
             valid_from: validFrom,
             valid_to: validTo,
             interval: range,

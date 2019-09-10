@@ -44,7 +44,7 @@ import Link from '@material-ui/core/Link';
 import { FormattedMessage } from 'react-intl';
 import isFunction from 'lodash/isFunction';
 
-const Row = function({ id, type, title, name, href, label, count, flagIconClassName, showType, onSelect, selectedId }) {
+const Row = function({ id, type, title, name, href, label, count, flagIconClassName, showType, onSelect, selectedId, showLink }) {
     const classes = useStyles();
     return (
         <TableRow
@@ -56,14 +56,17 @@ const Row = function({ id, type, title, name, href, label, count, flagIconClassN
                 selected: classes.selectedRow
             }}>
             <TableCell component="th" scope="row">
-                {href &&
-                <Link
-                    href={href}
-                    color="textPrimary"
-                    target="_blank"
-                    onClick={event => event.stopPropagation()}>
-                    <LinkIcon/>{' '}
-                </Link>}
+                {showLink && (
+                    href
+                    ? <Link
+                        href={href}
+                        color="textPrimary"
+                        target="_blank"
+                        onClick={event => event.stopPropagation()}>
+                        <LinkIcon/>
+                    </Link>
+                    : <CloseIcon color="error"/>
+                )}
                 {flagIconClassName && <span className={flagIconClassName} style={{ marginRight: 8 }}/>}
                 {showType && type ? <span style={{fontStyle: 'italic'}}>{`${type} - `}</span> : ''}
                 {label || title || name || `Identifier: ${id}`}
@@ -73,7 +76,7 @@ const Row = function({ id, type, title, name, href, label, count, flagIconClassN
     );
 };
 
-const Table = function({ title = '', top, header, loading, items, showType, onSelect, footer, error, columnLabel, selectedId, onUpdateSelected, itemsFormatter }) {
+const Table = function({ showLink, title = '', top, header, loading, items, showType, onSelect, footer, error, columnLabel, selectedId, onUpdateSelected, itemsFormatter }) {
     const classes = useStyles();
     const [formattedItems, setFormatedItems] = useState(items);
 
@@ -115,6 +118,7 @@ const Table = function({ title = '', top, header, loading, items, showType, onSe
                     <TableBody>
                         {selectedItem && <Row
                             {...selectedItem}
+                            showLink={showLink}
                             showType={showType}
                             onSelect={onSelect}
                             selectedId={selectedId}/>}
@@ -132,6 +136,7 @@ const Table = function({ title = '', top, header, loading, items, showType, onSe
                                 count={count}
                                 flagIconClassName={flagIconClassName}
 
+                                showLink={showLink}
                                 showType={showType}
                                 onSelect={onSelect}
                                 selectedId={selectedId}/>
@@ -146,7 +151,7 @@ const Table = function({ title = '', top, header, loading, items, showType, onSe
 
 export default Table;
 
-export const RequestTable = function({ selectedId, onUpdateSelected, label, showType, header, maxCount = 10, timeRange, globalTimeRange, requests = {}, onSelect, resourceType, resourceId, date, eventType, itemsFormatter  }) {
+export const RequestTable = function({ showLink, selectedId, onUpdateSelected, label, showType, header, maxCount = 10, timeRange, globalTimeRange, requests = {}, onSelect, resourceType, resourceId, date, eventType, itemsFormatter  }) {
     const [textFilter, onFilter] = useState('');
     const keys = Object.keys(requests);
     const [view, setView] = useState(keys[0]);
@@ -163,6 +168,7 @@ export const RequestTable = function({ selectedId, onUpdateSelected, label, show
 
     return (
         <Table
+            showLink={showLink}
             showType={showType}
             onUpdateSelected={onUpdateSelected}
             selectedId={selectedId}

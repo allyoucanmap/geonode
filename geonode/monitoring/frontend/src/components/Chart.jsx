@@ -28,11 +28,13 @@ import Paper from '@material-ui/core/Paper';
 import useStyles from '../hooks/useStyles';
 import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
+import PersonOutlinedIcon from '@material-ui/icons/PersonOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
     getResourcesHitsInterval,
-    getResourcesVisitorsInterval
+    getResourcesVisitorsInterval,
+    getResourcesAnonymousInterval
 } from '../api';
 import useRequest from '../hooks/useRequest';
 import ResponseError from './ResponseError';
@@ -46,6 +48,11 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
     const { items = [], count: hitsCount, format } = response || {};
     const [userResponse, userLoading, userError] = useRequest(getResourcesVisitorsInterval, { timeRange: globalTimeRange ? undefined : timeRange,  resourceType, resource: resourceId, eventType }, [ timeRange, resourceId, resourceType, date, eventType ]);
     const { items: visitors, count: visitorsCount } = userResponse;
+
+    const [anonymousResponse, anonymousLoading, anonymousError] = useRequest(getResourcesAnonymousInterval, { timeRange: globalTimeRange ? undefined : timeRange,  resourceType, resource: resourceId, eventType }, [ timeRange, resourceId, resourceType, date, eventType ]);
+    const { items: anonymous, count: anonymousCount } = anonymousResponse;
+
+    
     return (
         <Fragment>
             <Paper className={fixedHeightPaper}>
@@ -55,7 +62,7 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                     gutterBottom>
                     {label}
             </Typography>
-                {loading || userLoading
+                {loading || userLoading || anonymousLoading
                     ? <CircularProgress className={classes.progress} />
                     : !(userError && hitsError) && <ResponsiveContainer
                         width="99%"
@@ -63,8 +70,9 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                         <BarChart
                             data={items.map((item, idx) => ({
                                 ...item,
-                                hits: item.val || 0,
-                                visitors: visitors && visitors[idx] && visitors[idx].val || 0
+                                'Hits': item.val || 0,
+                                'Unique Visitors': visitors && visitors[idx] && visitors[idx].val || 0,
+                                'Anonymous Sessions': anonymous && anonymous[idx] && anonymous[idx].val || 0,
                             }))}
                             margin={{
                                 top: 16,
@@ -94,14 +102,15 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                             </YAxis>
                             <Tooltip
                                 labelFormatter={(value) => `Date ${moment.utc(value).format(format)}`} />
-                            <Bar type="monotone" dataKey="hits" fill="#2c689c" />
-                            <Bar type="monotone" dataKey="visitors" fill="#ff8f31" />
+                            <Bar type="monotone" dataKey="Hits" fill="#2c689c" />
+                            <Bar type="monotone" dataKey="Unique Visitors" fill="#ff8f31" />
+                            <Bar type="monotone" dataKey="Anonymous Sessions" fill="#333333" />
                         </BarChart>
                     </ResponsiveContainer>}
             </Paper>
             <Paper>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                         {!hitsError
                             ? <Typography
                                 component="h2"
@@ -119,7 +128,7 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                                     variant: 'h6'
                                 }} />}
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                         {!userError
                             ? <Typography
                                 component="h2"
@@ -127,12 +136,31 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                                 color="primary"
                                 align="center"
                                 gutterBottom>
-                                <PersonIcon style={{ verticalAlign: 'middle' }} /> <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/> {visitorsCount}
+                                <PersonIcon style={{ verticalAlign: 'middle' }} /> <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/> {visitorsCount}
 
                             </Typography>
                             : <ResponseError
                                 {...userError}
-                                label={<FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>}
+                                label={<FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>}
+                                typography={{
+                                    component: 'h2',
+                                    variant: 'h6'
+                                }} />}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        {!userError
+                            ? <Typography
+                                component="h2"
+                                variant="h6"
+                                color="primary"
+                                align="center"
+                                gutterBottom>
+                                <PersonOutlinedIcon style={{ verticalAlign: 'middle' }} /> <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/> {anonymousCount}
+
+                            </Typography>
+                            : <ResponseError
+                                {...anonymousError}
+                                label={<FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>}
                                 typography={{
                                     component: 'h2',
                                     variant: 'h6'

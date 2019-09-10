@@ -28,6 +28,7 @@ import Autocomplete from '../components/Autocomplete';
 import TimeRangeSelect from '../components/TimeRangeSelect';
 import { RequestTable } from '../components/Table';
 import PersonIcon from '@material-ui/icons/Person';
+import PersonOutlinedIcon from '@material-ui/icons/PersonOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Chip from '@material-ui/core/Chip';
 import {
@@ -36,12 +37,14 @@ import {
     getCountriesCount,
     getEventsHitsList,
     getEventsVisitorsList,
+    getEventsAnonymousList,
     getVisitorsList,
     getUserAgentFamilyCount,
     getUserAgentCount,
     getRequestHitsCount,
     getRequestVisitorsCount,
-    // getUsersCount,
+    getResourcesAnonymousList,
+    getRequestAnonymousCount,
     getEventCountOnResource
 } from '../api';
 import { ranges, setTimeRangeProperties } from '../utils/TimeRangeUtils';
@@ -145,19 +148,6 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                             }
                         }} />
                 </Grid>
-                {/*<Grid item xs={12} md={3}>
-                    <RequestCounter
-                        timeRange={timeRange}
-                        date={date}
-                        globalTimeRange
-                        label={<FormattedMessage id="users" defaultMessage="Users"/>}
-                        requests={{
-                            count: {
-                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
-                                request: getUsersCount
-                            }
-                        }} />
-                </Grid>*/}
                 <Grid item xs={12}>
                     <Divider />
                 </Grid>
@@ -185,6 +175,11 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                 label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getRequestAnonymousCount
                             }
                         }}/>
                 </Grid>
@@ -205,6 +200,11 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                 label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getRequestAnonymousCount
                             }
                         }} />
                 </Grid>
@@ -225,6 +225,11 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                 label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getRequestAnonymousCount
                             }
                         }} />
                 </Grid>
@@ -246,6 +251,11 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                 label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getRequestVisitorsCount
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getRequestAnonymousCount
                             }
                         }}  />
                 </Grid>
@@ -323,6 +333,7 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                     <RequestTable
                         timeRange={timeRange}
                         globalTimeRange
+                        showLink
                         date={date}
                         maxCount={maxCount}
                         resourceType={resourceType}
@@ -345,9 +356,14 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                 request: getResourcesHitsList
                             },
                             visitors: {
-                                label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
+                                label: <FormattedMessage id="uniqueVisitors" defaultMessage="Unique Visitors"/>,
                                 Icon: PersonIcon,
                                 request: getResourcesVisitorsList
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getResourcesAnonymousList
                             }
                         }}/>
                 </Grid>
@@ -386,6 +402,11 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
                                 label: <FormattedMessage id="uniqueVisits" defaultMessage="Unique Visits"/>,
                                 Icon: PersonIcon,
                                 request: getEventsVisitorsList
+                            },
+                            anonymous: {
+                                label: <FormattedMessage id="anonymousSessions" defaultMessage="Anonymous Sessions"/>,
+                                Icon: PersonOutlinedIcon,
+                                request: getEventsAnonymousList
                             }
                         }}/>
                 </Grid>

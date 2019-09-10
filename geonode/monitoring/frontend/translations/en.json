@@ -3,7 +3,8 @@
     "messages": {
         "count": "Count",
         "hits": "Hits",
-        "uniqueVisits": "Sessions",
+        "uniqueVisitors": "Unique Visitors",
+        "anonymousSessions": "Anonymous Sessions",
         "visits": "Visits",
         "requestError": "Request Error",
         "name": "Name",

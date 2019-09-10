@@ -54,13 +54,16 @@ const CounterValue = function({ label, count = 0, error, loading, variant = 'h4'
             {error
             ? <ResponseError {...error} label={<span>{label} {counterLabel}</span>}/>
             : count < 999
-                ? <Typography
-                    variant={variant}
-                    align="center">
-                    {Icon && <Icon />} {numeral(count || 0).format('Oa')}
-                </Typography>
+                ? <Tooltip
+                    title={<span>{counterLabel} {count || 0}</span>}>
+                    <Typography
+                        variant={variant}
+                        align="center">
+                        {Icon && <Icon />} {numeral(count || 0).format('Oa')}
+                    </Typography>
+                </Tooltip>
                 : <Tooltip
-                    title={count || 0}>
+                    title={<span>{counterLabel} {count || 0}</span>}>
                     <Typography
                         variant={variant}
                         align="center">
