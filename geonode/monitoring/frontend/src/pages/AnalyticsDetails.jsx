@@ -46,7 +46,11 @@ import {
     getResourcesAnonymousList,
     getRequestAnonymousCount,
     getEventCountOnResource,
-    getEventsDates
+    getEventsDates,
+    getLayersCount,
+    getMapsCount,
+    getDocumentsCount,
+    getUsersCount
 } from '../api';
 import { ranges, setTimeRangeProperties } from '../utils/TimeRangeUtils';
 import { RequestChart } from '../components/Chart';
@@ -98,6 +102,64 @@ export default function AnalyticsDetails({ maxCount = 10, match, history }) {
             maxWidth="lg"
             className={classes.container}>
             <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Typography
+                        component="h1"
+                        variant="h6">
+                        <FormattedMessage id="currentNumberOfResources" defaultMessage="Current Number of Resources"/>
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <RequestCounter
+                        timeRange={timeRange}
+                        globalTimeRange
+                        label={<FormattedMessage id="layers" defaultMessage="Layers"/>}
+                        requests={{
+                            count: {
+                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
+                                request: getLayersCount
+                            }
+                        }} />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <RequestCounter
+                        timeRange={timeRange}
+                        globalTimeRange
+                        label={<FormattedMessage id="maps" defaultMessage="Maps"/>}
+                        requests={{
+                            count: {
+                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
+                                request: getMapsCount
+                            }
+                        }} />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <RequestCounter
+                        timeRange={timeRange}
+                        globalTimeRange
+                        label={<FormattedMessage id="documents" defaultMessage="Documents"/>}
+                        requests={{
+                            count: {
+                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
+                                request: getDocumentsCount
+                            }
+                        }} />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <RequestCounter
+                        timeRange={timeRange}
+                        globalTimeRange
+                        label={<FormattedMessage id="users" defaultMessage="Users"/>}
+                        requests={{
+                            count: {
+                                label: <FormattedMessage id="count" defaultMessage="Count"/>,
+                                request: getUsersCount
+                            }
+                        }} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Divider />
+                </Grid>
                 <Grid item xs={12}>
                     <Typography
                         component="h1"

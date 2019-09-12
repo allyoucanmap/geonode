@@ -81,24 +81,12 @@ class GeoserverStatus extends React.Component {
   }
 
   componentWillMount() {
-    // this.get();
+    this.setHost(this.props);
 
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.services && nextProps.timestamp) {
-      let host = nextProps.services[0].name;
-      let firstTime = false;
-      if (this.state.host === '') {
-        firstTime = true;
-        this.setState({ host });
-      } else {
-        host = this.state.host;
-      }
-      if (firstTime || nextProps.timestamp !== this.props.timestamp) {
-        this.get(host, nextProps.interval);
-      }
-    }
+    this.setHost(nextProps);
   }
 
   componentWillUnmount() {
@@ -156,6 +144,22 @@ class GeoserverStatus extends React.Component {
         </div>
       </HoverPaper>
     );
+  }
+
+  setHost = (props) => {
+    if (props && props.services && props.timestamp) {
+      let host = props.services[0].name;
+      let firstTime = false;
+      if (this.state.host === '') {
+        firstTime = true;
+        this.setState({ host });
+      } else {
+        host = this.state.host;
+      }
+      if (firstTime || props.timestamp !== this.props.timestamp) {
+        this.get(host, props.interval);
+      }
+    }
   }
 }
 
