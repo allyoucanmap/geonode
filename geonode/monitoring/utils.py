@@ -39,6 +39,7 @@ from django.conf import settings
 from django.db.models.fields.related import RelatedField
 
 from geonode.monitoring.models import RequestEvent, ExceptionEvent
+from geonode.settings import DATETIME_INPUT_FORMATS
 
 
 GS_FORMAT = '%Y-%m-%dT%H:%M:%S'  # 2010-06-20T2:00:00
@@ -130,7 +131,8 @@ class GeoServerMonitorClient(object):
         resp = requests.get(
             rest_url,
             auth=HTTPBasicAuth(username, password),
-            timeout=30)
+            timeout=30,
+            verify=False)
         doc = bs(resp.content, features="lxml")
         links = doc.find_all('a')
         for l in links:
@@ -139,7 +141,7 @@ class GeoServerMonitorClient(object):
             if data:
                 yield data
             else:
-                log.href("Skipping payload for {}".format(href))
+                log.warning("Skipping payload for {}".format(href))
 
     def get_request(self, href, format=format):
         username = settings.OGC_SERVER['default']['USER']
@@ -148,7 +150,8 @@ class GeoServerMonitorClient(object):
         r = requests.get(
             href,
             auth=HTTPBasicAuth(username, password),
-            timeout=30)
+            timeout=30,
+            verify=False)
         if r.status_code != 200:
             log.warning('Invalid response for %s: %s', href, r)
             return
@@ -318,12 +321,30 @@ class TypeChecks(object):
         raise ValueError("Invalid label value: {}".format(val))
 
     @staticmethod
+    def user_type(val):
+        from geonode.monitoring.models import MetricLabel
+        try:
+            if MetricLabel.objects.filter(user=val).count():
+                return val
+        except MetricLabel.DoesNotExist:
+            raise ValueError("Invalid user value: {}".format(val))
+
+    @staticmethod
     def event_type_type(val):
         from geonode.monitoring.models import EventType
         try:
             return EventType.objects.get(name=val)
         except EventType.DoesNotExist:
             raise ValueError("Event Type {} doesn't exist".format(val))
+
+    @staticmethod
+    def ows_service_type(val):
+        if str(val).lower() in ("true", "1"):
+            return True
+        elif str(val).lower() in ("false", "0"):
+            return False
+        else:
+            raise ValueError("Invalid ows_service value {}".format(val))
 
 
 def dump(obj, additional_fields=tuple()):
@@ -353,3 +374,19 @@ def dump(obj, additional_fields=tuple()):
                    'seconds': val.total_seconds()}
         out[fname] = val
     return out
+
+
+def extend_datetime_input_formats(formats):
+    """
+    Add new DateTime input formats
+    :param formats: input formats yoy want to add (tuple or list)
+    :return: extended input formats
+    """
+    input_formats = DATETIME_INPUT_FORMATS
+    if isinstance(input_formats, tuple):
+        input_formats += tuple(formats)
+    elif isinstance(input_formats, list):
+        input_formats.extend(formats)
+    else:
+        raise ValueError("Input parameter must be tuple or list.")
+    return input_formats

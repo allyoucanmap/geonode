@@ -30,6 +30,7 @@ from django.views.generic.base import View
 from django.core.urlresolvers import reverse
 from django.core.management import call_command
 from django.views.decorators.csrf import csrf_exempt
+from geonode.decorators import view_decorator, superuser_protected
 
 from geonode.utils import json_response
 from geonode.monitoring.collector import CollectorAPI
@@ -46,7 +47,7 @@ from geonode.monitoring.models import (
     MetricNotificationCheck,
 )
 from geonode.monitoring.models import do_autoconfigure
-from geonode.monitoring.utils import TypeChecks, dump
+from geonode.monitoring.utils import TypeChecks, dump, extend_datetime_input_formats
 from geonode.monitoring.service_handlers import exposes
 
 # Create your views here.
@@ -100,8 +101,14 @@ class HostsList(View):
 
 
 class _ValidFromToLastForm(forms.Form):
-    valid_from = forms.DateTimeField(required=False)
-    valid_to = forms.DateTimeField(required=False)
+    valid_from = forms.DateTimeField(
+        required=False,
+        input_formats=extend_datetime_input_formats(['%Y-%m-%dT%H:%M:%S.%fZ'])
+    )
+    valid_to = forms.DateTimeField(
+        required=False,
+        input_formats=extend_datetime_input_formats(['%Y-%m-%dT%H:%M:%S.%fZ'])
+    )
     interval = forms.IntegerField(min_value=60, required=False)
     last = forms.IntegerField(min_value=60, required=False)
 
@@ -150,18 +157,28 @@ class CheckTypeForm(_ValidFromToLastForm):
 class MetricsFilters(CheckTypeForm):
     GROUP_BY_RESOURCE = 'resource'
     GROUP_BY_CHOICES = ((GROUP_BY_RESOURCE, "By resource",),)
-    GROUP_BY_RESOURCE_NO_LABEL = 'resource_no_label'
+    GROUP_BY_RESOURCE_ON_LABEL = 'resource_on_label'
+    GROUP_BY_RESOURCE_ON_USER = 'resource_on_user'
+    GROUP_BY_COUNT_ON_RESOURCE = 'count_on_resource'
     GROUP_BY_LABEL = 'label'
+    GROUP_BY_USER = 'user'
+    GROUP_BY_USER_ON_LABEL = 'user_on_label'
     GROUP_BY_EVENT_TYPE = 'event_type'
     GROUP_BY_EVENT_TYPE_ON_LABEL = 'event_type_on_label'
+    GROUP_BY_EVENT_TYPE_ON_USER = 'event_type_on_user'
     GROUP_BY_CHOICES = ((GROUP_BY_RESOURCE, "By resource",),
-                        (GROUP_BY_RESOURCE_NO_LABEL, "By resource but no label",),
+                        (GROUP_BY_RESOURCE_ON_LABEL, "By resource on label",),
+                        (GROUP_BY_RESOURCE_ON_USER, "By resource on user",),
+                        (GROUP_BY_COUNT_ON_RESOURCE, "By resource with count",),
                         (GROUP_BY_LABEL, "By label",),
+                        (GROUP_BY_USER, "By user",),
+                        (GROUP_BY_USER_ON_LABEL, "By user on label",),
                         (GROUP_BY_EVENT_TYPE, "By event type",),
                         (GROUP_BY_EVENT_TYPE_ON_LABEL, "By event type on label",),
-                        )
+                        (GROUP_BY_EVENT_TYPE_ON_USER, "By event type on user",),)
     service = forms.CharField(required=False)
     label = forms.CharField(required=False)
+    user = forms.CharField(required=False)
     resource = forms.CharField(required=False)
     resource_type = forms.ChoiceField(
         choices=MonitoredResource.TYPES, required=False)
@@ -177,6 +194,9 @@ class MetricsFilters(CheckTypeForm):
 
     def clean_label(self):
         return self._check_type('label')
+
+    def clean_user(self):
+        return self._check_type('user')
 
     def clean_event_type(self):
         return self._check_type('event_type')
@@ -208,6 +228,13 @@ class ResourcesFilterForm(LabelsFilterForm):
 
     def clean_resource_type(self):
         return self._check_type('resource_type')
+
+
+class EventTypesFilterForm(CheckTypeForm):
+    ows_service = forms.CharField(required=False)
+
+    def clean_ows_service(self):
+        return self._check_type('ows_service')
 
 
 class FilteredView(View):
@@ -251,6 +278,7 @@ class FilteredView(View):
         return json_response(data)
 
 
+@view_decorator(superuser_protected, subclass=True)
 class ResourcesList(FilteredView):
 
     filter_form = ResourcesFilterForm
@@ -289,6 +317,7 @@ class ResourcesList(FilteredView):
         return q
 
 
+@view_decorator(superuser_protected, subclass=True)
 class ResourceTypesList(FilteredView):
 
     output_name = 'resource_types'
@@ -301,7 +330,7 @@ class ResourceTypesList(FilteredView):
                                       'status': 'errors',
                                       'errors': f.errors},
                                      status=400)
-        out = [{"name": mrt[0], "type": mrt[1]} for mrt in MonitoredResource.TYPES]
+        out = [{"name": mrt[0], "type_label": mrt[1]} for mrt in MonitoredResource.TYPES]
         data = {self.output_name: out,
                 'success': True,
                 'errors': {},
@@ -311,6 +340,7 @@ class ResourceTypesList(FilteredView):
         return json_response(data)
 
 
+@view_decorator(superuser_protected, subclass=True)
 class LabelsList(FilteredView):
 
     filter_form = LabelsFilterForm
@@ -341,15 +371,45 @@ class LabelsList(FilteredView):
         return q
 
 
+@view_decorator(superuser_protected, subclass=True)
 class EventTypeList(FilteredView):
-
-    fields_map = (('name', 'name',),)
+    filter_form = EventTypesFilterForm
+    fields_map = (('name', 'name',), ('type_label', 'type_label',),)
     output_name = 'event_types'
 
     def get_queryset(self, **kwargs):
+        if "ows_service" in kwargs and kwargs["ows_service"] is not None:
+            if kwargs["ows_service"]:
+                return EventType.objects.filter(name__icontains="OWS")
+            else:
+                return EventType.objects.exclude(name__icontains="OWS")
         return EventType.objects.all()
 
+    def get(self, request, *args, **kwargs):
+        qargs = self.get_filter_args(request)
+        if self.errors:
+            return json_response({'success': False,
+                                  'status': 'errors',
+                                  'errors': self.errors},
+                                 status=400)
+        q = self.get_queryset(**qargs)
+        from_fields = [f[0] for f in self.fields_map]
+        to_fields = [f[1] for f in self.fields_map]
+        labels = dict(EventType.EVENT_TYPES)
+        out = [dict(zip(
+            to_fields,
+            (getattr(item, f) if f != 'type_label' else labels[getattr(item, 'name')] for f in from_fields)
+        )) for item in q]
+        data = {self.output_name: out,
+                'success': True,
+                'errors': {},
+                'status': 'ok'}
+        if self.output_name != 'data':
+            data['data'] = {'key': self.output_name}
+        return json_response(data)
 
+
+@view_decorator(superuser_protected, subclass=True)
 class MetricDataView(View):
 
     def get_filters(self, **kwargs):
@@ -362,7 +422,7 @@ class MetricDataView(View):
             out.update(f.cleaned_data)
         return out
 
-    def get(self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         filters = self.get_filters(**kwargs)
         if self.errors:
             return json_response({'status': 'error',
