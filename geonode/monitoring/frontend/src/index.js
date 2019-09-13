@@ -18,7 +18,7 @@
 #
 #########################################################################
 */
-import 'babel-polyfill';
+import '@babel/polyfill';
 
 import React from 'react';
 import { render } from 'react-dom';
@@ -38,7 +38,7 @@ import {
     getResourceMainUrls
 } from './api';
 import AnalyticsContext from './context';
-import { IntlProvider, FormattedMessage } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import useTranslation from './hooks/useTranslation';
 
 import '../theme/overrides.scss';
