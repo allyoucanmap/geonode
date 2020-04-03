@@ -39,7 +39,7 @@ import {
 import useRequest from '../hooks/useRequest';
 import ResponseError from './ResponseError';
 import { FormattedMessage } from 'react-intl';
-import numeral from 'numeral';
+import numbro from 'numbro';
 
 export const RequestChart = function ({ label, timeRange, globalTimeRange, resourceType, resourceId, date, eventType }) {
     const classes = useStyles();
@@ -95,7 +95,9 @@ export const RequestChart = function ({ label, timeRange, globalTimeRange, resou
                             <YAxis
                                 fontSize="11"
                                 allowDecimals={false}
-                                tickFormatter={(value) => numeral(value).format('Oa')}>
+                                tickFormatter={(value) => numbro(value).format({
+                                    average: true
+                                })}>
                                 <Label position="left" style={{ textAnchor: 'middle', fontSize: 10 }} >
                                     Count
                                 </Label>

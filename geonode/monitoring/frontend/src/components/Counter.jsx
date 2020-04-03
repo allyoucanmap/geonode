@@ -26,7 +26,7 @@ import Paper from '@material-ui/core/Paper';
 import useStyles from '../hooks/useStyles';
 import useRequest from '../hooks/useRequest';
 import ResponseError from './ResponseError';
-import numeral from 'numeral';
+import numbro from 'numbro';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const CounterTitle = function({ label, children }) {
@@ -59,7 +59,7 @@ const CounterValue = function({ label, count = 0, error, loading, variant = 'h4'
                     <Typography
                         variant={variant}
                         align="center">
-                        {Icon && <Icon />} {numeral(count || 0).format('Oa')}
+                        {Icon && <Icon />} {count || 0}
                     </Typography>
                 </Tooltip>
                 : <Tooltip
@@ -67,7 +67,10 @@ const CounterValue = function({ label, count = 0, error, loading, variant = 'h4'
                     <Typography
                         variant={variant}
                         align="center">
-                        {Icon && <Icon />} {numeral(count || 0).format('Oa')}
+                        {Icon && <Icon />} {numbro(count || 0).format({
+                            average: true,
+                            mantissa: 1,
+                        })}
                     </Typography>
                 </Tooltip>}
         </Fragment>;

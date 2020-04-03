@@ -22,7 +22,7 @@
 const path = require('path');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 
-const devServerHost = 'ENTER_DEV_HOST_IN_WEBPACK_CONFIG';
+const DEV_SERVER_HOST = 'ENTER REMOTE GEONODE';
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
@@ -80,9 +80,24 @@ module.exports = (env, argv) => {
         devServer: isProduction
             ? undefined
             : {
+                https: true,
                 port: 3000,
                 contentBase: './',
-                hot: true,
+                before: function(app) {
+                    const hashRegex = /\.[a-zA-Z0-9]{1,}\.js/;
+                    app.use(function(req, res, next) {
+                        // remove hash from requests to use the local js
+                        if (req.url.indexOf('/static/monitoring/bundle') !== -1) {
+                            req.url = req.url.replace(hashRegex, '.js');
+                            req.path = req.path.replace(hashRegex, '.js');
+                            req.originalUrl = req.originalUrl.replace(hashRegex, '.js');
+                        }
+                        next();
+                    });
+                },
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
                 proxy: [
                     {
                         context: [
@@ -91,11 +106,10 @@ module.exports = (env, argv) => {
                             '!**/assets/**',
                             '!**/translations/**'
                         ],
-                        target: `http://${devServerHost}/`,
-                        secure: false,
-                        changeOrigin: true,
+                        target: `https://${DEV_SERVER_HOST}/`,
                         headers: {
-                            host: devServerHost
+                            Host: DEV_SERVER_HOST,
+                            Referer: `https://${DEV_SERVER_HOST}/`
                         }
                     }
                 ]
