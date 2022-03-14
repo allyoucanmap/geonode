@@ -1625,6 +1625,70 @@ if GEONODE_CLIENT_LAYER_PREVIEW_LIBRARY == 'mapstore':
 
     MAPSTORE_BASELAYERS = DEFAULT_MS2_BACKGROUNDS
 
+    MAPSTORE_PROJECTION_DEFS = [
+        {
+            "code": "EPSG:32647",
+            "def": "+proj=utm +zone=47 +datum=WGS84 +units=m +no_defs",
+            "extent": [-250000, -200000, 1250000, 8400000],
+            "worldExtent": [96.0000, 0.0000, 102.0000, 84.0000]
+        },
+        {
+            "code": "EPSG:32648",
+            "def": "+proj=utm +zone=48 +datum=WGS84 +units=m +no_defs",
+            "extent": [-250000, -200000, 1250000, 8400000],
+            "worldExtent": [102.0000, 0.0000, 108.0000, 84.0000]
+        }
+    ]
+
+    MAPSTORE_PLUGINS_CONFIG_PATCH_RULES = []
+    _ACTIVE_VIEWS = ['layer_detail', 'layer_view', 'layer_style_edit', 'layer_data_edit', 'map_view', 'map_edit', 'layer_export']
+    for _view_name in _ACTIVE_VIEWS:
+        MAPSTORE_PLUGINS_CONFIG_PATCH_RULES.append({
+            "op": "replace",
+            "jsonpath": f"$.{_view_name}..[?(@.name == 'Print')].cfg",
+            "value": {}
+        })
+        MAPSTORE_PLUGINS_CONFIG_PATCH_RULES.append({
+            "op": "add",
+            "jsonpath": f"/{_view_name}/-",
+            "value": {
+                "name": "PrintProjection",
+                "override": {
+                    "Print": {
+                        "position": 5
+                    }
+                },
+                "cfg": {
+                    "allowPreview": True,
+                    "projections": [
+                        { "name": "WGS84", "value": "EPSG:4326" },
+                        { "name": "Mercator", "value": "EPSG:3857" },
+                        { "name": "UTM 47N", "value": "EPSG:32647" },
+                        { "name": "UTM 48N", "value": "EPSG:32648" }
+                    ]
+                }
+            }
+        })
+        MAPSTORE_PLUGINS_CONFIG_PATCH_RULES.append({
+            "op": "add",
+            "jsonpath": f"/{_view_name}/-",
+            "value": {
+                "name": "PrintTextInput",
+                "cfg": {
+                    "property": "extra",
+                    "label": "Extra Stuff",
+                    "placeholder": "Enter extra stuff..."
+                },
+                "override": {
+                    "Print": {
+                        "target": "left-panel",
+                        "position": 1.5
+                    }
+                }
+            }
+        })
+
+
 # -- END Client Hooksets Setup
 
 SERVICE_UPDATE_INTERVAL = 0
