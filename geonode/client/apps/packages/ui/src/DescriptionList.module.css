@@ -1,0 +1,25 @@
+.grid {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  row-gap: var(--gn-space-3, 0.75rem);
+  column-gap: var(--gn-space-5, 1.5rem);
+  margin: 0;
+  font-size: var(--gn-font-size-md, 0.88rem);
+}
+
+.label {
+  color: var(--gn-text-muted, #777);
+  font-size: var(--gn-font-size-sm, 0.85rem);
+}
+
+.value {
+  margin: 0;
+  font-weight: var(--gn-font-weight-medium, 500);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    row-gap: var(--gn-space-1, 0.25rem);
+  }
+}

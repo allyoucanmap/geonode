@@ -1,0 +1,28 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gn-space-1, 0.25rem);
+  margin-bottom: var(--gn-space-4, 1rem);
+}
+
+.label {
+  font-size: var(--gn-font-size-sm, 0.85rem);
+  font-weight: var(--gn-font-weight-medium, 500);
+  color: var(--gn-text, #333);
+}
+
+.required {
+  color: var(--gn-danger, #d9534f);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--gn-font-size-xs, 0.78rem);
+  color: var(--gn-text-muted, #777);
+}
+
+.error {
+  margin: 0;
+  font-size: var(--gn-font-size-xs, 0.78rem);
+  color: var(--gn-danger, #d9534f);
+}

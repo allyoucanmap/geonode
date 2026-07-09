@@ -1,0 +1,26 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: var(--gn-space-5, 1.5rem);
+  padding: var(--gn-space-3, 0.75rem) var(--gn-space-5, 1.5rem);
+  border-bottom: 1px solid var(--gn-border, #e5e5e5);
+  background: var(--gn-surface, #fff);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.crumbbar {
+  padding: var(--gn-space-2, 0.5rem) var(--gn-space-5, 1.5rem);
+  border-bottom: 1px solid var(--gn-border, #e5e5e5);
+  background: var(--gn-surface-subtle, #fafbfc);
+}

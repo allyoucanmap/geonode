@@ -1,0 +1,94 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gn-space-2, 0.5rem);
+  border: 1px solid transparent;
+  border-radius: var(--gn-radius-sm, 3px);
+  font-family: inherit;
+  font-weight: var(--gn-font-weight-medium, 500);
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--gn-transition, 0.12s ease), border-color var(--gn-transition, 0.12s ease),
+    color var(--gn-transition, 0.12s ease), transform var(--gn-transition, 0.12s ease);
+}
+
+.button:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.button svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--gn-primary, #397aab);
+  outline-offset: 2px;
+}
+
+/* ---- Sizes ---- */
+.md {
+  padding: 0.4rem 0.85rem;
+  font-size: var(--gn-font-size-md, 0.88rem);
+}
+
+.sm {
+  padding: 0.25rem 0.6rem;
+  font-size: var(--gn-font-size-xs, 0.78rem);
+}
+
+/* ---- Variants ---- */
+.primary {
+  background: var(--gn-primary, #397aab);
+  border-color: var(--gn-primary, #397aab);
+  color: var(--gn-text-on-primary, #fff);
+}
+
+.primary:not(:disabled):hover {
+  background: var(--gn-primary-hover, #2e6591);
+  border-color: var(--gn-primary-hover, #2e6591);
+}
+
+.secondary {
+  background: var(--gn-surface, #fff);
+  border-color: var(--gn-border-strong, #d0d0d0);
+  color: var(--gn-text, #333);
+}
+
+.secondary:not(:disabled):hover {
+  border-color: var(--gn-primary, #397aab);
+  color: var(--gn-primary, #397aab);
+}
+
+.danger {
+  background: var(--gn-danger, #d9534f);
+  border-color: var(--gn-danger, #d9534f);
+  color: var(--gn-text-on-danger, #fff);
+}
+
+.danger:not(:disabled):hover {
+  filter: brightness(0.92);
+}
+
+.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--gn-text, #333);
+}
+
+.ghost:not(:disabled):hover {
+  background: var(--gn-surface-subtle, #fafbfc);
+  color: var(--gn-primary, #397aab);
+}
+
+.spinner {
+  color: currentColor;
+}

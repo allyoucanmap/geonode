@@ -1,0 +1,23 @@
+{
+  "name": "@geonode/ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./index.css": "./src/index.css",
+    "./reset.css": "./src/reset.css"
+  },
+  "scripts": {
+    "gallery": "vite --config dev/vite.config.js",
+    "shots": "node dev/shots.mjs"
+  },
+  "dependencies": {
+    "@geonode/icons": "workspace:*"
+  },
+  "peerDependencies": {
+    "radix-ui": "^1",
+    "react": "^19"
+  }
+}

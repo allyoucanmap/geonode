@@ -1,0 +1,17 @@
+.title {
+  margin: 0 0 var(--gn-space-2, 0.5rem);
+  font-size: var(--gn-font-size-lg, 1rem);
+  font-weight: var(--gn-font-weight-semibold, 600);
+}
+
+.description {
+  margin: 0 0 var(--gn-space-5, 1.5rem);
+  color: var(--gn-text-muted, #777);
+  font-size: var(--gn-font-size-md, 0.88rem);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gn-space-2, 0.5rem);
+}

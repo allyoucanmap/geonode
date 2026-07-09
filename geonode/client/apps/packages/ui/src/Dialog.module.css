@@ -1,0 +1,22 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--gn-overlay-scrim, rgba(10, 14, 22, 0.45));
+  backdrop-filter: blur(1px);
+}
+
+.content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 340px;
+  max-width: 90vw;
+  padding: var(--gn-space-5, 1.5rem);
+  border: 1px solid var(--gn-border, #e5e5e5);
+  border-radius: var(--gn-radius, 4px);
+  background: var(--gn-surface, #fff);
+  color: var(--gn-text, inherit);
+  font-family: var(--gn-font-family, system-ui, sans-serif);
+  box-shadow: var(--gn-shadow-overlay, 0 12px 40px rgba(10, 14, 22, 0.28));
+}

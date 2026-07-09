@@ -2,3 +2,12 @@ include README README.rst README.md LICENSE requirements.txt
 recursive-exclude geonode/static/.components
 recursive-include geonode *.css *.eot *.gif *.html *.ico *.ini *.jpg *.js *.json *.less *.md *.mo *.po *.otf *.png *.rst *.sample *.svg *.swf *.ttf *.txt *.woff *.woff2 *.xml *.xsl README
 recursive-include geonode/contrib/geosites gunicorn nginx
+
+# In-repo client apps: ship the JS sources (so a wheel/sdist can be built on
+# install) and the built bundles (so installs that already built them ship them:
+# per-app under static/manage, shared runtime under static/client).
+recursive-include geonode/client/apps *
+recursive-include geonode/client/static/manage *
+recursive-include geonode/client/static/client *
+recursive-exclude geonode/client/apps/node_modules *
+

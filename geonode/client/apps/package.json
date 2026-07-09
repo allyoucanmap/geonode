@@ -1,0 +1,34 @@
+{
+  "name": "geonode-client",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev:manage": "pnpm --filter @geonode/manage dev",
+    "dev:ui": "pnpm --filter @geonode/ui gallery",
+    "build:vendor": "node build-vendor.mjs",
+    "build": "node build-vendor.mjs && pnpm -r run build",
+    "lint": "eslint .",
+    "test": "node build-vendor.mjs && node --import ./smoke/register.mjs ./smoke/smoke.mjs"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "playwright": "^1",
+    "vite": "^8.0.12"
+  }
+}

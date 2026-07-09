@@ -83,6 +83,8 @@ urlpatterns += [
     re_path(r"^catalogue/", include("geonode.catalogue.urls")),
     # Group Profiles views
     re_path(r"^groups/", include("geonode.groups.urls")),
+    # Management SPA (geonode/client/apps/manage)
+    re_path(r"^manage/", include("geonode.client.urls")),
     # Harvesting views
     re_path(r"^harvesters/", include("geonode.harvesting.urls")),
     # ident

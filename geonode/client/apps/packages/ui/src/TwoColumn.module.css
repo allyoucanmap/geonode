@@ -1,0 +1,13 @@
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.sidebar {
+  width: var(--gn-sidebar-width, 300px);
+  flex-shrink: 0;
+  padding: var(--gn-space-4, 1rem) var(--gn-space-5, 1.5rem);
+  border-right: 1px solid var(--gn-border, #e5e5e5);
+  background: var(--gn-surface-subtle, #fafbfc);
+}

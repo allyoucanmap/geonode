@@ -2,6 +2,7 @@
 import os
 import re
 import ast
+import sys
 import json
 import time
 import socket
@@ -14,6 +15,10 @@ from invoke import task
 
 logger = logging.getLogger(__name__)
 
+@task
+def build_client(ctx):
+    script = Path(__file__).resolve().parent / "geonode" / "client" / "apps" / "build.py"
+    ctx.run(f'"{sys.executable}" "{script}"', pty=False)
 
 @task
 def update(ctx):

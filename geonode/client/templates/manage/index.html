@@ -1,0 +1,24 @@
+{% load vite %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoNode Manage</title>
+    {# Runtime config so the SPA is subpath-aware (FORCE_SCRIPT_NAME) without a rebuild. #}
+    {# `extensions` is the list autodiscovered from installed apps' client modules. #}
+    <script id="manage-config" type="application/json">
+      {"basename": "{{ script_name }}/manage", "apiBase": "{{ script_name }}/api/v2", "extensions": {% client_extensions_json "manage" %}}
+    </script>
+    {# Import map for the shared singletons (react / @geonode/*); production only, #}
+    {# MUST precede the app module so its bare specifiers resolve. No-op in DEBUG. #}
+    {% vite_importmap %}
+    {% vite_vendor_styles %}
+    {# Classic script: defines gettext/ngettext/interpolate globals before the deferred module bundle. #}
+    <script src="{% url 'manage-javascript-catalog' %}"></script>
+    {% vite_asset "manage" "src/main.jsx" %}
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

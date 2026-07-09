@@ -1,0 +1,87 @@
+:root {
+  color-scheme: light dark;
+
+  /* ---- Brand / primary ---- */
+  --gn-primary: light-dark(#397aab, #2f74c0);
+  --gn-primary-hover: light-dark(#2e6591, #2766ad);
+  --gn-primary-deep: light-dark(#0c3756, #11486f);
+  --gn-primary-soft: light-dark(rgba(57, 122, 171, 0.1), rgba(91, 159, 212, 0.16));
+
+  /* ---- Surfaces ---- */
+  --gn-bg: light-dark(#ffffff, #0f1216);
+  --gn-surface: light-dark(#ffffff, #1a1e24);
+  --gn-surface-subtle: light-dark(#f8fafc, #15181d);
+  --gn-surface-muted: light-dark(#f2f5f8, #232830);
+
+  /* ---- Text ---- */
+  --gn-text: light-dark(#1f2a37, #e6e9ee);
+  --gn-text-muted: light-dark(#5c6b7a, #98a3b0);
+  --gn-text-on-primary: #ffffff;
+  --gn-text-on-danger: #ffffff;
+
+  /* ---- Borders ---- */
+  --gn-border: light-dark(#e3e8ee, #2b3038);
+  --gn-border-strong: light-dark(#cbd3dc, #3a424c);
+  --gn-focus-ring: var(--gn-primary);
+
+  /* ---- Semantic ---- */
+  --gn-success: #5cb85c;
+  --gn-success-hover: #449d44;
+  --gn-success-soft: light-dark(rgba(92, 184, 92, 0.15), rgba(92, 184, 92, 0.18));
+  --gn-warning: #f0ad4e;
+  --gn-warning-soft: light-dark(rgba(240, 173, 78, 0.2), rgba(240, 173, 78, 0.22));
+  --gn-warning-text: light-dark(#b06d0a, #d99a3a);
+  --gn-danger: #c9302c;
+  --gn-danger-soft: light-dark(rgba(201, 48, 44, 0.06), rgba(201, 48, 44, 0.14));
+  --gn-info: #5bc0de;
+  --gn-info-soft: light-dark(rgba(91, 192, 222, 0.15), rgba(91, 192, 222, 0.18));
+  --gn-info-text: light-dark(#2f8fa8, #7cc7dc);
+
+  /* ---- Typography ---- */
+  --gn-font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --gn-font-size: 14px;
+  --gn-font-size-xs: 0.78rem;
+  --gn-font-size-sm: 0.85rem;
+  --gn-font-size-md: 0.88rem;
+  --gn-font-size-lg: 1rem;
+  --gn-font-size-xl: 1.15rem;
+  --gn-line-height: 1.5;
+  --gn-font-weight-normal: 400;
+  --gn-font-weight-medium: 500;
+  --gn-font-weight-semibold: 600;
+
+  /* ---- Radius ---- */
+  --gn-radius-sm: 4px;
+  --gn-radius: 6px;
+
+  /* ---- Spacing (4px scale) ---- */
+  --gn-space-1: 0.25rem;
+  --gn-space-2: 0.5rem;
+  --gn-space-3: 0.75rem;
+  --gn-space-4: 1rem;
+  --gn-space-5: 1.5rem;
+  --gn-space-6: 2rem;
+
+  /* ---- Layout dimensions ---- */
+  --gn-navbar-height: 56px;
+  --gn-footer-height: 40px;
+  --gn-sidebar-width: 300px;
+  --gn-content-max-width: 1100px;
+
+  /* ---- Elevation / motion / layering ---- */
+  --gn-shadow-sm: light-dark(0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 2px rgba(0, 0, 0, 0.4)),
+    light-dark(0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 3px rgba(0, 0, 0, 0.5));
+  --gn-shadow-overlay: light-dark(0 12px 40px rgba(10, 14, 22, 0.28), 0 12px 40px rgba(0, 0, 0, 0.6));
+  --gn-transition: 0.12s ease;
+  --gn-overlay-scrim: light-dark(rgba(10, 14, 22, 0.45), rgba(0, 0, 0, 0.6));
+  --gn-z-navbar: 20;
+  --gn-z-overlay: 50;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}

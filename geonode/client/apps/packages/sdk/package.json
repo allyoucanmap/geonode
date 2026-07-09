@@ -1,0 +1,19 @@
+{
+  "name": "@geonode/sdk",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "peerDependencies": {
+    "react": "^19",
+    "react-router-dom": "^7"
+  },
+  "dependencies": {
+    "@geonode/api": "workspace:*",
+    "@geonode/i18n": "workspace:*",
+    "@geonode/ui": "workspace:*"
+  }
+}

@@ -1,0 +1,41 @@
+/* Shared styling for text-like native controls (input, textarea, select). */
+.control {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  font-family: inherit;
+  font-size: var(--gn-font-size-md, 0.88rem);
+  color: var(--gn-text, #333);
+  background: var(--gn-surface, #fff);
+  border: 1px solid var(--gn-border-strong, #d0d0d0);
+  border-radius: var(--gn-radius-sm, 3px);
+  transition: border-color var(--gn-transition, 0.12s ease), box-shadow var(--gn-transition, 0.12s ease);
+}
+
+.control::placeholder {
+  color: var(--gn-text-muted, #777);
+}
+
+.control:focus {
+  outline: none;
+  border-color: var(--gn-focus-ring, #397aab);
+  box-shadow: 0 0 0 2px var(--gn-primary-soft, rgba(57, 122, 171, 0.1));
+}
+
+.control:disabled {
+  background: var(--gn-surface-muted, #f7f8f9);
+  color: var(--gn-text-muted, #777);
+  cursor: not-allowed;
+}
+
+.invalid {
+  border-color: var(--gn-danger, #d9534f);
+}
+
+.invalid:focus {
+  box-shadow: 0 0 0 2px var(--gn-danger-soft, rgba(217, 83, 79, 0.12));
+}
+
+.textarea {
+  min-height: 5rem;
+  resize: vertical;
+}

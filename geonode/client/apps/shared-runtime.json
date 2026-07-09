@@ -1,0 +1,12 @@
+{
+  "_comment": "Single source of truth for the shared runtime. Maps each vendor chunk (built by build-vendor.mjs into static/client/vendor/) to the bare specifiers it serves. Consumed by build-vendor.mjs (per-entry externals), manage/vite.config.js (build externals), and templatetags/vite.py (the runtime import map). Keep specifiers and chunk filenames in sync here and nowhere else.",
+  "chunks": {
+    "react.js": ["react", "react/jsx-runtime", "react-dom", "react-dom/client"],
+    "react-router-dom.js": ["react-router-dom"],
+    "react-query.js": ["@tanstack/react-query"],
+    "i18n.js": ["@geonode/i18n"],
+    "api.js": ["@geonode/api"],
+    "ui.js": ["@geonode/ui"],
+    "sdk.js": ["@geonode/sdk"]
+  }
+}

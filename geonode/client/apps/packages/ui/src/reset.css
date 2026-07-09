@@ -1,0 +1,21 @@
+:root {
+  font-family: var(--gn-font-family);
+  font-size: var(--gn-font-size);
+  line-height: var(--gn-line-height);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--gn-bg);
+  color: var(--gn-text);
+}
+
+a {
+  color: inherit;
+}

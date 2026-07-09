@@ -17,4 +17,39 @@
 #
 #########################################################################
 
-# this file is a placeholder as paver tasks expect a tests.py module for each app
+import json
+from pathlib import Path
+
+from django.test import SimpleTestCase
+
+from geonode.client.extensions import _targets_app
+from geonode.client.templatetags.vite import _import_map_specifiers, _SHARED_RUNTIME
+
+
+class TargetsAppTests(SimpleTestCase):
+    def test_no_apps_key_targets_all(self):
+        self.assertTrue(_targets_app({"id": "x"}, "manage"))
+
+    def test_empty_apps_targets_all(self):
+        self.assertTrue(_targets_app({"id": "x", "apps": []}, "manage"))
+
+    def test_listed_app_matches(self):
+        self.assertTrue(_targets_app({"id": "x", "apps": ["manage"]}, "manage"))
+
+    def test_unlisted_app_excluded(self):
+        self.assertFalse(_targets_app({"id": "x", "apps": ["explore"]}, "manage"))
+
+    def test_none_app_disables_filter(self):
+        self.assertTrue(_targets_app({"id": "x", "apps": ["explore"]}, None))
+
+
+class SharedRuntimeTests(SimpleTestCase):
+    def test_import_map_covers_required_specifiers(self):
+        specifiers = _import_map_specifiers()
+        for required in ("react", "react-dom", "@tanstack/react-query", "@geonode/sdk"):
+            self.assertIn(required, specifiers)
+
+    def test_import_map_matches_shared_runtime(self):
+        chunks = json.loads(Path(_SHARED_RUNTIME).read_text())["chunks"]
+        expected = {s: chunk for chunk, specs in chunks.items() for s in specs}
+        self.assertEqual(_import_map_specifiers(), expected)

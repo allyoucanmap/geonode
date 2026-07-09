@@ -3,6 +3,10 @@
 *.egg-info
 build
 target
+# in-repo client apps build output (produced by `vite build`)
+/geonode/client/static/manage/
+# shared client runtime build output (produced by build-vendor.mjs)
+/geonode/client/static/client/
 pip-log.txt
 MANIFEST
 dist

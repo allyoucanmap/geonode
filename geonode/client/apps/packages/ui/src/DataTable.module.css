@@ -1,0 +1,150 @@
+.wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--gn-border, #e5e5e5);
+  border-radius: var(--gn-radius, 4px);
+  background: var(--gn-surface, #fff);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--gn-font-size-sm, 0.85rem);
+}
+
+.table th,
+.table td {
+  padding: var(--gn-space-2, 0.5rem) var(--gn-space-3, 0.75rem);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table thead th {
+  background: var(--gn-surface-muted, #f7f8f9);
+  color: var(--gn-text-muted, #777);
+  font-weight: var(--gn-font-weight-semibold, 600);
+  font-size: var(--gn-font-size-xs, 0.78rem);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--gn-border, #e5e5e5);
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--gn-border, #e5e5e5);
+  transition: background var(--gn-transition, 0.12s ease);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: var(--gn-surface-muted, #f2f5f8);
+}
+
+.table tbody tr.selectedRow,
+.table tbody tr.selectedRow:hover {
+  background: var(--gn-primary-soft, rgba(57, 122, 171, 0.1));
+}
+
+.selectedRow > td:first-child {
+  box-shadow: inset 3px 0 0 var(--gn-primary, #397aab);
+}
+
+.sortButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.sortButton:hover {
+  color: var(--gn-primary, #397aab);
+}
+
+.sortButton:hover .caret {
+  opacity: 0.55;
+}
+
+.caret {
+  opacity: 0.25;
+}
+
+.caretActive {
+  color: var(--gn-primary, #397aab);
+}
+
+.checkCell {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.actionsCell {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.emptyCell {
+  padding: 0;
+}
+
+/* ---- Resizable columns (opt-in) ---- */
+.fixed {
+  table-layout: fixed;
+}
+
+.fixed th {
+  position: relative;
+}
+
+.fixed td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resizing {
+  user-select: none;
+  cursor: col-resize;
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 9px;
+  height: 100%;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.resizer::after {
+  content: '';
+  position: absolute;
+  top: 25%;
+  right: 3px;
+  width: 2px;
+  height: 50%;
+  border-radius: 1px;
+  background: var(--gn-border-strong, #d0d0d0);
+  transition: background var(--gn-transition, 0.12s ease), height var(--gn-transition, 0.12s ease),
+    top var(--gn-transition, 0.12s ease);
+}
+
+.resizer:hover::after,
+.resizing .resizer::after {
+  top: 0;
+  height: 100%;
+  background: var(--gn-primary, #397aab);
+}
