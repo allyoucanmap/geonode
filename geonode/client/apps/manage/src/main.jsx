@@ -16,7 +16,9 @@ async function bootstrap() {
   const external = await loadExtensions(EXTENSIONS)
   const modules = await registerModules([...coreModules, ...external], { app: APP_ID })
   const router = buildRouter(modules, BASENAME)
-  createRoot(document.getElementById('root')).render(
+  const container = document.getElementById('root')
+  const root = (container._reactRoot ??= createRoot(container))
+  root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <ModulesProvider modules={modules}>
