@@ -19,6 +19,7 @@ const SOURCES = {
   'api.js': here('packages/api/src/index.js'),
   'ui.js': here('packages/ui/src/index.js'),
   'sdk.js': here('packages/sdk/src/index.js'),
+  'icons.js': here('packages/icons/src/index.js'),
 }
 
 let first = true
