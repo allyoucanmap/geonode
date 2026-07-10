@@ -12,8 +12,8 @@
     </script>
     {# Import map for the shared singletons (react / @geonode/*); production only, #}
     {# MUST precede the app module so its bare specifiers resolve. No-op in DEBUG. #}
-    {% vite_importmap %}
-    {% vite_vendor_styles %}
+    {% vite_importmap "manage" %}
+    {% vite_vendor_styles "manage" %}
     {# Classic script: defines gettext/ngettext/interpolate globals before the deferred module bundle. #}
     <script src="{% url 'manage-javascript-catalog' %}"></script>
     {% vite_asset "manage" "src/main.jsx" %}

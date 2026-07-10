@@ -45,6 +45,13 @@ def _dev_server(app):
     return _DEFAULT_DEV_SERVER
 
 
+def _client_dev(app=None):
+    override = getattr(settings, "CLIENT_VITE_DEV", None)
+    if isinstance(override, dict) and app in override:
+        return bool(override[app])
+    return settings.DEBUG
+
+
 def _import_map_specifiers():
     with open(_SHARED_RUNTIME) as fh:
         chunks = json.load(fh)["chunks"]
@@ -100,7 +107,7 @@ def _dev_tags(app, entry):
 
 @register.simple_tag
 def vite_asset(app, entry):
-    if settings.DEBUG:
+    if _client_dev(app):
         return _dev_tags(app, entry)
     chunk = _load_manifest(app)[entry]
     tags = [f'<script type="module" src="{static(f"{app}/" + chunk["file"])}"></script>']
@@ -110,8 +117,8 @@ def vite_asset(app, entry):
 
 
 @register.simple_tag
-def vite_importmap():
-    if settings.DEBUG:
+def vite_importmap(app=None):
+    if _client_dev(app):
         return ""
     version = get_version()
     imports = {
@@ -122,8 +129,8 @@ def vite_importmap():
 
 
 @register.simple_tag
-def vite_vendor_styles():
-    if settings.DEBUG:
+def vite_vendor_styles(app=None):
+    if _client_dev(app):
         return ""
     version = get_version()
     links = [
