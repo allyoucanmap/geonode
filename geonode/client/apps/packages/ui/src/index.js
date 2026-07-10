@@ -1,3 +1,6 @@
+import './index.css'
+import './reset.css'
+
 export { Alert } from './Alert.jsx'
 export { Badge } from './Badge.jsx'
 export { Breadcrumb } from './Breadcrumb.jsx'

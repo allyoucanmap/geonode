@@ -8,8 +8,6 @@ import { createQueryClient } from './core/queryClient.js'
 import { modules as coreModules } from './modules/index.js'
 import { buildRouter } from './router.jsx'
 import { API_BASE, BASENAME, EXTENSIONS, APP_ID } from './config.js'
-import '@geonode/ui/index.css'
-import '@geonode/ui/reset.css'
 
 configureApi({ baseUrl: API_BASE })
 const queryClient = createQueryClient()
